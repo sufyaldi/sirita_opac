@@ -109,8 +109,8 @@ class CirculationController extends Controller
         $dueDate = \Carbon\Carbon::parse($loan->due_date)->startOfDay();
         $returnDate = \Carbon\Carbon::now()->startOfDay();
         
-        if ($returnDate->greaterThan($dueDate)) {
-            $overdueDays = $returnDate->diffInDays($dueDate, true);
+        $overdueDays = $this->calculateNetOverdueDays($dueDate, $returnDate);
+        if ($overdueDays > 0) {
             $fineRate = 500; // Example: Rp 500 per day fine
             $fineAmount = $overdueDays * $fineRate;
 
@@ -168,8 +168,8 @@ class CirculationController extends Controller
         $dueDate = \Carbon\Carbon::parse($loan->due_date)->startOfDay();
         $returnDate = \Carbon\Carbon::now()->startOfDay();
         
-        if ($returnDate->greaterThan($dueDate)) {
-            $overdueDays = $returnDate->diffInDays($dueDate, true);
+        $overdueDays = $this->calculateNetOverdueDays($dueDate, $returnDate);
+        if ($overdueDays > 0) {
             $fineRate = 500;
             $fineAmount = $overdueDays * $fineRate;
 
@@ -285,5 +285,55 @@ class CirculationController extends Controller
             ->get();
 
         return view('admin.circulation.receipt', compact('member', 'activeLoans'));
+    }
+
+    /**
+     * Calculate overdue days excluding specific/weekly holidays.
+     */
+    private function calculateNetOverdueDays($dueDate, $returnDate)
+    {
+        if ($returnDate->lessThanOrEqualTo($dueDate)) {
+            return 0;
+        }
+
+        // Fetch specific holiday dates in this range
+        $specificHolidays = \App\Models\Holiday::whereNotNull('holiday_date')
+            ->whereBetween('holiday_date', [$dueDate->toDateString(), $returnDate->toDateString()])
+            ->pluck('holiday_date')
+            ->map(fn($date) => \Carbon\Carbon::parse($date)->toDateString())
+            ->toArray();
+
+        // Fetch repeating weekly holidays
+        $weeklyHolidays = \App\Models\Holiday::whereNull('holiday_date')
+            ->pluck('holiday_dayname')
+            ->map(fn($day) => strtolower($day))
+            ->toArray();
+
+        $netOverdue = 0;
+        
+        // Loop through each day from the day after due date to the return date
+        $current = (clone $dueDate)->addDay();
+        while ($current->lessThanOrEqualTo($returnDate)) {
+            $isHoliday = false;
+
+            // Check specific date
+            if (in_array($current->toDateString(), $specificHolidays)) {
+                $isHoliday = true;
+            }
+
+            // Check weekly day name (e.g. 'sunday', 'saturday')
+            $dayName = strtolower($current->format('l'));
+            if (in_array($dayName, $weeklyHolidays)) {
+                $isHoliday = true;
+            }
+
+            if (!$isHoliday) {
+                $netOverdue++;
+            }
+
+            $current->addDay();
+        }
+
+        return $netOverdue;
     }
 }

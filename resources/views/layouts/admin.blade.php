@@ -162,6 +162,12 @@
             <li class="menu-item {{ Request::routeIs('admin.stock-take.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.stock-take.index') }}">Inventarisasi</a>
             </li>
+            <li class="menu-item {{ Request::routeIs('admin.system.holidays.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.system.holidays.index') }}">Hari Libur</a>
+            </li>
+            <li class="menu-item {{ Request::routeIs('admin.system.users.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.system.users.index') }}">Pustakawan Staf</a>
+            </li>
             <li class="menu-item {{ Request::routeIs('admin.setting.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.setting.index') }}">Pengaturan</a>
             </li>

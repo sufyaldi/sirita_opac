@@ -106,4 +106,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('stock-take/current', [\App\Http\Controllers\Admin\StockTakeController::class, 'scanItem'])->name('stock-take.scan');
     Route::get('stock-take/report', [\App\Http\Controllers\Admin\StockTakeController::class, 'showReport'])->name('stock-take.report');
     Route::post('stock-take/finish', [\App\Http\Controllers\Admin\StockTakeController::class, 'finishSession'])->name('stock-take.finish');
+
+    // Holidays Management Module
+    Route::get('system/holidays', [\App\Http\Controllers\Admin\HolidayController::class, 'index'])->name('system.holidays.index');
+    Route::post('system/holidays', [\App\Http\Controllers\Admin\HolidayController::class, 'store'])->name('system.holidays.store');
+    Route::delete('system/holidays/{holiday_id}', [\App\Http\Controllers\Admin\HolidayController::class, 'destroy'])->name('system.holidays.destroy');
+
+    // System Users (Librarians) Module
+    Route::get('system/users', [\App\Http\Controllers\Admin\SystemUserController::class, 'index'])->name('system.users.index');
+    Route::post('system/users', [\App\Http\Controllers\Admin\SystemUserController::class, 'store'])->name('system.users.store');
+    Route::put('system/users/{user_id}', [\App\Http\Controllers\Admin\SystemUserController::class, 'update'])->name('system.users.update');
+    Route::delete('system/users/{user_id}', [\App\Http\Controllers\Admin\SystemUserController::class, 'destroy'])->name('system.users.destroy');
+    Route::post('system/users/groups', [\App\Http\Controllers\Admin\SystemUserController::class, 'storeGroup'])->name('system.users.groups.store');
+    Route::delete('system/users/groups/{group_id}', [\App\Http\Controllers\Admin\SystemUserController::class, 'destroyGroup'])->name('system.users.groups.destroy');
 });

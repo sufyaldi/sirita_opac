@@ -197,5 +197,30 @@ class DummyDataSeeder extends Seeder
                 'status' => $isReceived ? 'received' : (rand(0, 1) === 1 ? 'expected' : 'missing'),
             ]);
         }
+
+        // 8. Create Stock Take Dummy Sessions
+        // A finished session from last year
+        $finishedSession = \App\Models\StockTakeSession::create([
+            'session_name' => 'Stok Opname Tahunan 2025',
+            'status' => 'finished',
+            'created_at' => now()->subYear(),
+            'updated_at' => now()->subYear()->addDays(5),
+        ]);
+
+        // An active session for current simulation
+        $activeSession = \App\Models\StockTakeSession::create([
+            'session_name' => 'Stok Opname Buku IT & Komputer 2026',
+            'status' => 'active',
+        ]);
+
+        // Scan some random items into the active session
+        $randomItemsToVerify = Item::inRandomOrder()->limit(8)->get();
+        foreach ($randomItemsToVerify as $item) {
+            \App\Models\StockTakeLog::create([
+                'session_id' => $activeSession->session_id,
+                'item_code' => $item->item_code,
+                'created_at' => now()->subHours(rand(1, 5)),
+            ]);
+        }
     }
 }
