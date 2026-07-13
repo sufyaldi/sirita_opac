@@ -407,7 +407,7 @@
             </li>
 
             {{-- Konfigurasi Sistem Dropdown --}}
-            <li class="menu-item-parent {{ Request::routeIs('admin.system.users.*') || Request::routeIs('admin.system.holidays.*') || Request::routeIs('admin.system.plugins.*') || Request::routeIs('admin.setting.*') ? 'active-parent' : '' }}">
+            <li class="menu-item-parent {{ Request::routeIs('admin.system.users.*') || Request::routeIs('admin.system.holidays.*') || Request::routeIs('admin.system.plugins.*') || Request::routeIs('admin.setting.*') || Request::routeIs('admin.plugins.slims-migrator.*') ? 'active-parent' : '' }}">
                 <div class="menu-item-header" onclick="toggleSubMenu(this)">
                     <div class="menu-item-header-left">
                         <i class="fas fa-cogs"></i>
@@ -424,6 +424,9 @@
                     </li>
                     <li class="{{ Request::routeIs('admin.system.plugins.*') ? 'active' : '' }}">
                         <a href="{{ route('admin.system.plugins.index') }}">⊙ Daftar Plugin</a>
+                    </li>
+                    <li class="{{ Request::routeIs('admin.plugins.slims-migrator.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.plugins.slims-migrator.index') }}">⊙ Migrasi SLiMS</a>
                     </li>
                     <li class="{{ Request::routeIs('admin.setting.*') ? 'active' : '' }}">
                         <a href="{{ route('admin.setting.index') }}">⊙ Pengaturan Umum</a>

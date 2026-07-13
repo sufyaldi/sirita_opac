@@ -140,6 +140,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('system/plugins', [\App\Http\Controllers\Admin\PluginController::class, 'index'])->name('system.plugins.index');
     Route::post('system/plugins/toggle', [\App\Http\Controllers\Admin\PluginController::class, 'toggle'])->name('system.plugins.toggle');
 
+    // SLiMS Migrator Routes
+    Route::get('system/plugins/slims-migrator', [\App\Http\Controllers\Admin\SlimsMigratorController::class, 'index'])->name('admin.plugins.slims-migrator.index');
+    Route::post('system/plugins/slims-migrator/test-connection', [\App\Http\Controllers\Admin\SlimsMigratorController::class, 'testConnection'])->name('admin.plugins.slims-migrator.test-conn');
+    Route::post('system/plugins/slims-migrator/run-step', [\App\Http\Controllers\Admin\SlimsMigratorController::class, 'runMigrationStep'])->name('admin.plugins.slims-migrator.run-step');
+
     // System Users (Librarians) Module
     Route::get('system/users', [\App\Http\Controllers\Admin\SystemUserController::class, 'index'])->name('system.users.index');
     Route::post('system/users', [\App\Http\Controllers\Admin\SystemUserController::class, 'store'])->name('system.users.store');
