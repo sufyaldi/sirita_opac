@@ -26,7 +26,8 @@ class OpacMemberController extends Controller
         if (session('opac_member_id')) {
             return redirect()->route('opac.member.dashboard');
         }
-        return view('opac.member.login');
+        $theme = \App\Models\Setting::get('opac_theme', 'default');
+        return view("opac.templates.{$theme}.member.login");
     }
 
     /**
@@ -103,7 +104,8 @@ class OpacMemberController extends Controller
         $fines      = Fine::where('member_id', $memberId)->whereRaw('credit < debet')->get();
         $totalFines = $fines->sum('debet') - $fines->sum('credit');
 
-        return view('opac.member.dashboard', compact(
+        $theme = \App\Models\Setting::get('opac_theme', 'default');
+        return view("opac.templates.{$theme}.member.dashboard", compact(
             'member', 'activeLoans', 'loanHistory', 'fines', 'totalFines'
         ));
     }

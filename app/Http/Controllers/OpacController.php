@@ -44,7 +44,8 @@ class OpacController extends Controller
         // Ambil pengumuman/berita yang aktif
         $promotions = \App\Models\Promotion::active()->get();
 
-        return view('opac.index', compact('results', 'totalTitles', 'totalItems', 'activeLoans', 'promotions'));
+        $theme = \App\Models\Setting::get('opac_theme', 'default');
+        return view("opac.templates.{$theme}.index", compact('results', 'totalTitles', 'totalItems', 'activeLoans', 'promotions'));
     }
 
     /**
@@ -54,6 +55,7 @@ class OpacController extends Controller
     {
         $book = Biblio::with(['authors', 'publisher', 'gmd', 'items'])->where('opac_hide', 0)->findOrFail($id);
         
-        return view('opac.show', compact('book'));
+        $theme = \App\Models\Setting::get('opac_theme', 'default');
+        return view("opac.templates.{$theme}.show", compact('book'));
     }
 }
