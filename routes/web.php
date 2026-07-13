@@ -129,8 +129,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::delete('system/users/groups/{group_id}', [\App\Http\Controllers\Admin\SystemUserController::class, 'destroyGroup'])->name('system.users.groups.destroy');
 
     // Akreditasi — Laporan Koleksi per Unit Perpustakaan
-    Route::get('accreditation', [AccreditationController::class, 'index'])->name('admin.accreditation.index');
-    Route::get('accreditation/unit/{unitId}', [AccreditationController::class, 'unitReport'])->name('admin.accreditation.report');
-    Route::post('accreditation/tag/{biblioId}', [AccreditationController::class, 'tagBiblio'])->name('admin.accreditation.tag');
-    Route::delete('accreditation/untag/{biblioId}/{unitId}', [AccreditationController::class, 'untagBiblio'])->name('admin.accreditation.untag');
+    Route::get('accreditation', [AccreditationController::class, 'index'])->name('accreditation.index');
+    Route::get('accreditation/unit/{unitId}', [AccreditationController::class, 'unitReport'])->name('accreditation.report');
+    Route::post('accreditation/tag/{biblioId}', [AccreditationController::class, 'tagBiblio'])->name('accreditation.tag');
+    Route::delete('accreditation/untag/{biblioId}/{unitId}', [AccreditationController::class, 'untagBiblio'])->name('accreditation.untag');
 });
