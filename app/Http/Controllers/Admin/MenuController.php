@@ -67,4 +67,3 @@ class MenuController extends Controller
                          ->with('success', 'Menu OPAC berhasil dihapus.');
     }
 }
-PHPEOF
