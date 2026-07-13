@@ -282,7 +282,7 @@
             </li>
 
             {{-- Bibliografi / Katalogisasi Dropdown --}}
-            <li class="menu-item-parent {{ Request::routeIs('admin.bibliography.*') || Request::routeIs('admin.copy-cataloging.*') || Request::routeIs('admin.barcode.*') || Request::routeIs('admin.marc.*') ? 'active-parent' : '' }}">
+            <li class="menu-item-parent {{ Request::routeIs('admin.bibliography.*') || Request::routeIs('admin.copy-cataloging.*') || Request::routeIs('admin.barcode.*') || Request::routeIs('admin.marc.*') || Request::routeIs('admin.items.*') ? 'active-parent' : '' }}">
                 <div class="menu-item-header" onclick="toggleSubMenu(this)">
                     <div class="menu-item-header-left">
                         <i class="fas fa-book"></i>
@@ -293,6 +293,9 @@
                 <ul class="sub-menu-items">
                     <li class="{{ Request::routeIs('admin.bibliography.*') ? 'active' : '' }}">
                         <a href="{{ route('admin.bibliography.index') }}">⊙ Bibliografi</a>
+                    </li>
+                    <li class="{{ Request::routeIs('admin.items.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.items.index') }}">⊙ Daftar Eksemplar</a>
                     </li>
                     <li class="{{ Request::routeIs('admin.copy-cataloging.*') ? 'active' : '' }}">
                         <a href="{{ route('admin.copy-cataloging.index') }}">⊙ Copy Cataloging</a>

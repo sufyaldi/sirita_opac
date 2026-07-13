@@ -48,6 +48,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     
     // Bibliography Module (CRUD)
     Route::resource('bibliography', BibliographyController::class);
+    Route::resource('items', \App\Http\Controllers\Admin\ItemController::class)->names('items');
 
     // Loan Rules Module (CRUD)
     Route::resource('circulation/loan-rules', \App\Http\Controllers\Admin\LoanRulesController::class)->names([
