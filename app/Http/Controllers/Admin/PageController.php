@@ -100,4 +100,3 @@ class PageController extends Controller
                          ->with('success', 'Halaman dinamis berhasil dihapus.');
     }
 }
-PHPEOF
