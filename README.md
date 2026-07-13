@@ -183,13 +183,25 @@ Kontribusi sangat disambut! Silakan buka _issue_ terlebih dahulu untuk mendiskus
 
 ---
 
+## 👤 Author
+
+**Sufyaldy**
+- 📧 Email: [sufyaldys@gmail.com](mailto:sufyaldys@gmail.com)
+- 🐙 GitHub: [@sufyaldy](https://github.com/sufyaldy)
+
+---
+
 ## 📄 Lisensi
 
-Proyek ini dilisensikan di bawah [MIT License](LICENSE).
+Proyek ini dilisensikan di bawah **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+> Lisensi AGPL-3.0 mewajibkan bahwa jika Anda menjalankan aplikasi ini sebagai layanan jaringan (misalnya via web), Anda **wajib** membagikan kode sumber modifikasi Anda kepada pengguna layanan tersebut.
+
+Lihat file [LICENSE](LICENSE) untuk teks lengkap lisensi.
 
 ---
 
 ## 🙏 Kredit
 
-- Proyek ini terinspirasi dan dibangun berdasarkan [SLiMS (Senayan Library Management System)](https://slims.web.id) yang merupakan perangkat lunak manajemen perpustakaan open-source asal Indonesia.
+- Proyek ini terinspirasi dan dibangun berdasarkan [SLiMS (Senayan Library Management System)](https://slims.web.id) yang merupakan perangkat lunak manajemen perpustakaan open-source asal Indonesia, juga dilisensikan di bawah AGPL-3.0.
 - Terima kasih kepada seluruh tim pengembang SLiMS atas kontribusi luar biasa mereka kepada dunia perpustakaan Indonesia.

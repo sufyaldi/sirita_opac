@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * SIRITA SLiMS - Sistem Informasi Riset & Tata Arsip
+ * Laravel Edition — Port of SLiMS 9 Bulian
+ *
+ * @author    Sufyaldy <sufyaldys@gmail.com>
+ * @license   AGPL-3.0-or-later
+ * @copyright 2026 Sufyaldy
+ */
+
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
