@@ -1,33 +1,47 @@
-@extends('layouts.opac')
+@extends('opac.templates.classic.layout')
 
-@section('title', 'Cari Buku - SIRITA OPAC')
+@section('title', 'Cari Buku - SIRITA OPAC Classic')
 
 @section('content')
 <style>
+    /* override root colors for Classic Akasia */
+    :root {
+        --bg-color: #f1f5f9;
+        --text-color: #262930;
+        --primary: #105e7c;
+        --primary-hover: #0d4d65;
+        --card-bg: #ffffff;
+        --border-color: #e2e8f0;
+    }
+
+    body {
+        background-color: var(--bg-color) !important;
+        color: var(--text-color) !important;
+    }
+
     .search-hero {
         text-align: center;
-        margin-bottom: 3.5rem;
-        padding: 4rem 2rem;
-        background: radial-gradient(circle at top, rgba(13, 148, 136, 0.12) 0%, transparent 70%);
-        border-radius: 24px;
-        border: 1px solid rgba(255, 255, 255, 0.03);
+        margin-bottom: 2.5rem;
+        padding: 3.5rem 2rem;
+        background: radial-gradient(circle at top, rgba(16, 94, 124, 0.08) 0%, transparent 70%);
+        border-radius: 16px;
+        border: 1px solid rgba(16, 94, 124, 0.1);
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
     }
 
     .search-hero h1 {
-        font-size: 3.2rem;
+        font-size: 2.8rem;
         margin-bottom: 0.75rem;
-        font-weight: 800;
-        letter-spacing: -0.04em;
-        background: linear-gradient(135deg, #f8fafc 30%, #0d9488 90%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        color: #1a202c;
     }
 
     .search-hero p {
-        color: #94a3b8;
-        font-size: 1.15rem;
-        margin-bottom: 2.5rem;
-        font-weight: 400;
+        color: #718096;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
     }
 
     .search-box-container {
@@ -38,142 +52,115 @@
 
     .search-input {
         width: 100%;
-        padding: 1.25rem 1.75rem;
-        font-size: 1.15rem;
-        border-radius: 99px;
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid var(--border-color);
-        color: white;
+        padding: 1.1rem 1.5rem;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        background: #ffffff;
+        border: 2px solid #cbd5e0;
+        color: #1a202c;
         outline: none;
         box-sizing: border-box;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(10px);
+        transition: all 0.2s ease;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
     }
 
     .search-input:focus {
         border-color: var(--primary);
-        box-shadow: 0 0 25px rgba(13, 148, 136, 0.3);
-        background: rgba(15, 23, 42, 0.85);
+        box-shadow: 0 0 0 3px rgba(16, 94, 124, 0.2);
     }
 
     .search-btn {
         position: absolute;
-        right: 8px;
-        top: 8px;
-        bottom: 8px;
-        background: linear-gradient(135deg, #0d9488, #2dd4bf);
+        right: 6px;
+        top: 6px;
+        bottom: 6px;
+        background: var(--primary);
         border: none;
         color: white;
-        padding: 0 2rem;
-        border-radius: 99px;
+        padding: 0 1.75rem;
+        border-radius: 6px;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.3s;
-        box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+        transition: background 0.2s;
     }
 
     .search-btn:hover {
-        opacity: 0.95;
-        box-shadow: 0 4px 20px rgba(13, 148, 136, 0.4);
+        background: var(--primary-hover);
     }
 
     .books-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 2rem;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.75rem;
     }
 
     .book-card {
-        background: var(--card-bg);
-        border: 1px solid var(--border-color);
-        border-radius: 20px;
-        padding: 1.75rem;
+        background: var(--card-bg) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 12px;
+        padding: 1.5rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        backdrop-filter: blur(10px);
-        position: relative;
-        overflow: hidden;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
     }
 
     .book-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(800px circle at var(--x, 0px) var(--y, 0px), rgba(13, 148, 136, 0.06), transparent 40%);
-        z-index: 1;
-        pointer-events: none;
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
-
-    .book-card:hover::before {
-        opacity: 1;
+        display: none !important;
     }
 
     .book-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        border-color: rgba(13, 148, 136, 0.4);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 20px -3px rgba(0,0,0,0.1);
+        border-color: var(--primary) !important;
     }
 
     .book-card h3 {
-        margin: 0 0 0.6rem 0;
-        font-size: 1.3rem;
+        margin: 0 0 0.5rem 0;
+        font-size: 1.2rem;
         font-weight: 700;
         line-height: 1.4;
-        z-index: 2;
-        position: relative;
     }
 
     .book-card h3 a {
-        color: #f1f5f9;
+        color: #1a202c;
         text-decoration: none;
         transition: color 0.2s;
     }
 
     .book-card h3 a:hover {
-        color: #2dd4bf;
+        color: var(--primary);
     }
 
     .book-info {
-        color: #64748b;
-        font-size: 0.88rem;
-        margin-bottom: 1.5rem;
-        z-index: 2;
-        position: relative;
+        color: #718096;
+        font-size: 0.85rem;
+        margin-bottom: 1.25rem;
     }
 
     .book-meta {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
-        padding-top: 1.25rem;
+        border-top: 1px solid var(--border-color);
+        padding-top: 1rem;
         margin-top: auto;
-        z-index: 2;
-        position: relative;
     }
 
     .badge {
-        background: rgba(13, 148, 136, 0.12);
-        color: #2dd4bf;
-        padding: 0.3rem 0.85rem;
-        border-radius: 99px;
-        font-size: 0.78rem;
-        font-weight: 600;
-        letter-spacing: 0.03em;
+        background: rgba(16, 94, 124, 0.08);
+        color: var(--primary);
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 700;
         text-transform: uppercase;
-        border: 1px solid rgba(13, 148, 136, 0.2);
+        border: 1px solid rgba(16, 94, 124, 0.15);
     }
 
     .btn-detail {
-        color: #94a3b8;
+        color: #718096;
         text-decoration: none;
         font-size: 0.88rem;
         font-weight: 600;
@@ -184,161 +171,51 @@
     }
 
     .btn-detail:hover {
-        color: #2dd4bf;
+        color: var(--primary);
     }
 
-    .pagination {
-        margin-top: 3.5rem;
-        display: flex;
-        justify-content: center;
-        width: 100%;
-    }
-
-    .pagination nav {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1.25rem;
-        width: 100%;
-    }
-
-    .pagination nav > div:first-child {
-        display: none !important;
-    }
-
-    .pagination nav > div:last-child {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .pagination nav p {
-        color: #475569;
-        font-size: 0.85rem;
-        margin: 0;
-    }
-
-    .pagination nav span[aria-current="page"] span,
-    .pagination nav a,
-    .pagination nav span {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.6rem 1.2rem;
-        border-radius: 10px;
-        border: 1px solid var(--border-color) !important;
-        background: rgba(15, 23, 42, 0.4) !important;
-        color: #cbd5e1 !important;
-        text-decoration: none;
-        font-size: 0.9rem;
-        font-weight: 500;
-        transition: all 0.3s;
-    }
-
-    .pagination nav a:hover {
-        border-color: var(--primary) !important;
-        color: white !important;
-        background: rgba(13, 148, 136, 0.15) !important;
-    }
-
-    .pagination nav span[aria-current="page"] span {
-        background: linear-gradient(135deg, #0d9488, #0f766e) !important;
-        border-color: var(--primary) !important;
-        color: white !important;
-        font-weight: 700;
-    }
-
-    .pagination svg {
-        width: 1rem !important;
-        height: 1rem !important;
-        display: inline-block;
-        vertical-align: middle;
-    }
-
-    .pagination span[style*="flex-1"] {
-        display: none !important;
-    }
-
-    /* 2-Column Layout */
-    .opac-layout-grid {
-        display: grid;
-        grid-template-columns: 1fr 320px;
-        gap: 2.5rem;
-        align-items: start;
-    }
-
-    @media (max-width: 992px) {
-        .opac-layout-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .opac-sidebar {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-    }
-
+    /* Sidebar Widgets */
     .sidebar-widget {
-        background: var(--card-bg);
-        border: 1px solid var(--border-color);
-        border-radius: 20px;
-        padding: 1.5rem;
-        backdrop-filter: blur(10px);
+        background: #ffffff !important;
+        border: 1px solid var(--border-color) !important;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05) !important;
+        border-radius: 12px !important;
+        padding: 1.25rem !important;
     }
 
     .widget-title {
-        font-size: 1rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin: 0 0 1.25rem 0;
-        color: #cbd5e1;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        border-bottom: 1px solid rgba(255,255,255,0.04);
-        padding-bottom: 0.75rem;
+        color: #1a202c !important;
+        border-bottom: 2px solid var(--primary) !important;
+        padding-bottom: 0.5rem !important;
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
     }
 
-    /* Stat Styles */
     .stat-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.65rem 0;
-        border-bottom: 1px dashed rgba(255,255,255,0.05);
-    }
-    .stat-row:last-child {
-        border-bottom: none;
-    }
-    .stat-number {
-        font-size: 1.2rem;
-        font-weight: 800;
-        color: #2dd4bf;
+        border-bottom: 1px dashed #e2e8f0 !important;
+        padding: 0.6rem 0 !important;
     }
 
-    /* Hours styles */
+    .stat-number {
+        color: var(--primary) !important;
+        font-size: 1.15rem !important;
+    }
+
     .hours-status {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.3rem 0.75rem;
-        border-radius: 99px;
-        font-size: 0.8rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
+        font-size: 0.75rem !important;
+        border-radius: 4px !important;
     }
+
     .status-open {
-        background: rgba(20, 184, 166, 0.15);
-        color: #2dd4bf;
-        border: 1px solid rgba(20, 184, 166, 0.25);
+        background: rgba(16, 185, 129, 0.1) !important;
+        color: #10b981 !important;
+        border: 1px solid rgba(16, 185, 129, 0.2) !important;
     }
+
     .status-closed {
-        background: rgba(239, 68, 68, 0.12);
-        color: #f87171;
-        border: 1px solid rgba(239, 68, 68, 0.2);
+        background: rgba(239, 68, 68, 0.08) !important;
+        color: #ef4444 !important;
+        border: 1px solid rgba(239, 68, 68, 0.15) !important;
     }
 </style>
 
@@ -356,25 +233,24 @@
 <div class="opac-layout-grid">
     <div class="results-container">
         @if($results->isEmpty())
-            <div style="text-align: center; color: #64748b; padding: 4rem 0; background: rgba(30, 41, 59, 0.2); border-radius: 20px; border: 1px dashed var(--border-color);">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: #475569; margin-bottom: 1rem;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-                <p style="font-size: 1.1rem; font-weight: 500;">Tidak ada koleksi yang cocok dengan kata kunci Anda.</p>
-                <p style="font-size: 0.88rem; color: #475569; margin-top: 0.25rem;">Coba periksa ejaan atau cari menggunakan kata kunci yang lebih umum.</p>
+            <div style="text-align: center; color: #718096; padding: 4rem 0; background: #ffffff; border-radius: 12px; border: 1px dashed #cbd5e0;">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: #a0aec0; margin-bottom: 1rem;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                <p style="font-size: 1.1rem; font-weight: 600; color: #4a5568;">Tidak ada koleksi yang cocok dengan kata kunci Anda.</p>
             </div>
         @else
             <div class="books-grid">
                 @foreach($results as $book)
-                    <div class="book-card" onmousemove="this.style.setProperty('--x', event.offsetX + 'px'); this.style.setProperty('--y', event.offsetY + 'px')">
+                    <div class="book-card">
                         <div>
                             <h3><a href="{{ route('opac.show', $book->biblio_id) }}">{{ $book->title }}</a></h3>
                             @if($book->authors->isNotEmpty())
-                                <p style="color: #2dd4bf; font-size: 0.92rem; margin: -0.25rem 0 0.85rem 0; font-weight: 500;">
+                                <p style="color: var(--primary); font-size: 0.92rem; margin: -0.25rem 0 0.85rem 0; font-weight: 600;">
                                     {{ $book->authors->pluck('author_name')->join(', ') }}
                                 </p>
                             @endif
                             <p class="book-info">
                                 @if($book->classification)
-                                    <span style="font-family: monospace; color: #94a3b8; background: rgba(255,255,255,0.05); padding: 0.15rem 0.4rem; border-radius: 4px;">{{ $book->classification }}</span>
+                                    <span style="font-family: monospace; color: #4a5568; background: #edf2f7; padding: 0.15rem 0.4rem; border-radius: 4px; font-weight: 600;">{{ $book->classification }}</span>
                                     <span style="margin: 0 0.25rem;">•</span>
                                 @endif
                                 @if($book->isbn_issn)
@@ -410,12 +286,12 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0M4 17h16M7 17v-6a5 5 0 0 1 10 0v6"/></svg>
                     Informasi & Pengumuman
                 </h3>
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
                     @foreach($promotions as $promo)
-                        <div style="border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 0.75rem;">
-                            <h4 style="margin: 0 0 0.35rem 0; font-size: 0.9rem; font-weight: 700; color: #2dd4bf;">{{ $promo->title }}</h4>
-                            <p style="margin: 0; font-size: 0.8rem; color: #64748b; line-height: 1.45;">{{ Str::limit($promo->content, 120) }}</p>
-                            <span style="font-size: 0.7rem; color: #475569; display: block; margin-top: 0.4rem;">
+                        <div style="border-bottom: 1px solid #edf2f7; padding-bottom: 0.75rem;">
+                            <h4 style="margin: 0 0 0.35rem 0; font-size: 0.9rem; font-weight: 700; color: var(--primary);">{{ $promo->title }}</h4>
+                            <p style="margin: 0; font-size: 0.8rem; color: #4a5568; line-height: 1.45;">{{ Str::limit($promo->content, 120) }}</p>
+                            <span style="font-size: 0.7rem; color: #a0aec0; display: block; margin-top: 0.4rem;">
                                 {{ $promo->publish_date ? $promo->publish_date->format('d M Y') : '' }}
                             </span>
                         </div>
@@ -431,22 +307,22 @@
                 Jam Operasional
             </h3>
             
-            <div id="status-operasional-container">
+            <div id="status-operasional-container" style="margin-top: 1rem;">
                 <!-- Javascript will inject status here dynamically based on actual server time -->
             </div>
 
-            <div style="font-size: 0.88rem; color: #94a3b8; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+            <div style="font-size: 0.88rem; color: #4a5568; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
                 <div style="display:flex; justify-content:space-between;">
                     <span>Senin – Jumat</span>
-                    <span style="color: #cbd5e1; font-weight: 600;">08:00 – 20:00</span>
+                    <span style="color: #2d3748; font-weight: 600;">08:00 – 20:00</span>
                 </div>
                 <div style="display:flex; justify-content:space-between;">
                     <span>Sabtu</span>
-                    <span style="color: #64748b;">Tutup</span>
+                    <span style="color: #a0aec0;">Tutup</span>
                 </div>
                 <div style="display:flex; justify-content:space-between;">
                     <span>Minggu</span>
-                    <span style="color: #64748b;">Tutup</span>
+                    <span style="color: #a0aec0;">Tutup</span>
                 </div>
             </div>
         </div>
@@ -457,18 +333,18 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
                 Statistik Koleksi
             </h3>
-            <div style="display: flex; flex-direction: column;">
+            <div style="display: flex; flex-direction: column; margin-top: 1rem;">
                 <div class="stat-row">
-                    <span style="color: #94a3b8; font-size: 0.88rem;">Total Judul Buku</span>
+                    <span style="color: #4a5568; font-size: 0.88rem;">Total Judul Buku</span>
                     <span class="stat-number">{{ number_format($totalTitles ?? 0) }}</span>
                 </div>
                 <div class="stat-row">
-                    <span style="color: #94a3b8; font-size: 0.88rem;">Total Eksemplar</span>
-                    <span class="stat-number" style="color: #2dd4bf;">{{ number_format($totalItems ?? 0) }}</span>
+                    <span style="color: #4a5568; font-size: 0.88rem;">Total Eksemplar</span>
+                    <span class="stat-number">{{ number_format($totalItems ?? 0) }}</span>
                 </div>
                 <div class="stat-row">
-                    <span style="color: #94a3b8; font-size: 0.88rem;">Sedang Dipinjam</span>
-                    <span class="stat-number" style="color: #f87171;">{{ number_format($activeLoans ?? 0) }}</span>
+                    <span style="color: #4a5568; font-size: 0.88rem;">Sedang Dipinjam</span>
+                    <span class="stat-number" style="color: #e53e3e;">{{ number_format($activeLoans ?? 0) }}</span>
                 </div>
             </div>
         </div>
@@ -477,10 +353,9 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Dynamic opening status calculation based on current server-synced local time
     function updateOpeningStatus() {
         const now = new Date();
-        const day = now.getDay(); // 0 = Minggu, 6 = Sabtu, 1-5 = Senin-Jumat
+        const day = now.getDay();
         const hours = now.getHours();
         const minutes = now.getMinutes();
         const currentTimeDecimal = hours + (minutes / 60);
@@ -489,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!container) return;
 
         let isOpen = false;
-        if (day >= 1 && day <= 5) { // Senin - Jumat
+        if (day >= 1 && day <= 5) {
             if (currentTimeDecimal >= 8.0 && currentTimeDecimal < 20.0) {
                 isOpen = true;
             }
@@ -498,30 +373,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isOpen) {
             container.innerHTML = `
                 <div class="hours-status status-open">
-                    <span style="display:inline-block; width:8px; height:8px; background:#2dd4bf; border-radius:50%; animation: pulse 1.5s infinite;"></span>
+                    <span style="display:inline-block; width:8px; height:8px; background:#10b981; border-radius:50%; animation: pulse 1.5s infinite;"></span>
                     Buka Sekarang
                 </div>
             `;
         } else {
             container.innerHTML = `
                 <div class="hours-status status-closed">
-                    <span style="display:inline-block; width:8px; height:8px; background:#f87171; border-radius:50%;"></span>
+                    <span style="display:inline-block; width:8px; height:8px; background:#ef4444; border-radius:50%;"></span>
                     Sudah Tutup
                 </div>
             `;
         }
     }
-
-    // Add pulse keyframes dynamically if not present
-    if (!document.getElementById('pulse-style')) {
-        const style = document.createElement('style');
-        style.id = 'pulse-style';
-        style.innerHTML = `@keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }`;
-        document.head.appendChild(style);
-    }
-
     updateOpeningStatus();
 });
 </script>
 @endsection
-
