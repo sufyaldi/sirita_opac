@@ -86,6 +86,7 @@
                 <option value="default" {{ $settings['opac_theme'] === 'default' ? 'selected' : '' }}>default (Hijau Tosca Modern)</option>
                 <option value="classic" {{ $settings['opac_theme'] === 'classic' ? 'selected' : '' }}>classic (Tema SLiMS Klasik)</option>
                 <option value="minimal" {{ $settings['opac_theme'] === 'minimal' ? 'selected' : '' }}>minimal (Tema Putih Bersih)</option>
+                <option value="iainpare" {{ $settings['opac_theme'] === 'iainpare' ? 'selected' : '' }}>iainpare (Tema Hijau Emas IAIN Parepare)</option>
             </select>
         </div>
 

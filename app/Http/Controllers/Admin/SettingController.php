@@ -33,7 +33,7 @@ class SettingController extends Controller
             'fine_rate'    => 'required|integer|min:0',
             'loan_limit'   => 'required|integer|min:1',
             'loan_period'  => 'required|integer|min:1',
-            'opac_theme'   => 'required|string|in:default,classic,minimal',
+            'opac_theme'   => 'required|string|in:default,classic,minimal,iainpare',
         ]);
 
         foreach ($validated as $key => $value) {
