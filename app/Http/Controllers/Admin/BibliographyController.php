@@ -34,14 +34,19 @@ class BibliographyController extends Controller
         // For this migration, we return a view. Depending on the approved plan,
         // it can be Blade or Inertia response. We'll use standard Laravel view.
         return view('admin.bibliography.index', compact('bibliographies'));
-    }
-
-    /**
+    }    /**
      * Show the form for creating a new bibliography.
      */
     public function create()
     {
-        return view('admin.bibliography.create');
+        $gmds       = \App\Models\Gmd::orderBy('gmd_name')->get();
+        $publishers = \App\Models\Publisher::orderBy('publisher_name')->get();
+        $places     = \App\Models\Place::orderBy('place_name')->get();
+        $languages  = \App\Models\Language::orderBy('language_name')->get();
+        $authors    = \App\Models\Author::orderBy('author_name')->get();
+        $topics     = \App\Models\Topic::orderBy('topic')->get();
+
+        return view('admin.bibliography.create', compact('gmds', 'publishers', 'places', 'languages', 'authors', 'topics'));
     }
 
     /**
@@ -56,13 +61,19 @@ class BibliographyController extends Controller
             'edition' => 'nullable|string|max:50',
             'call_number' => 'nullable|string|max:50',
             'classification' => 'nullable|string|max:40',
+            'gmd_id' => 'nullable|integer',
+            'publisher_id' => 'nullable|integer',
+            'publish_place_id' => 'nullable|integer',
+            'language_id' => 'nullable|integer',
             'notes' => 'nullable|string',
             'cover_image' => 'nullable|image|max:2048',
             'attachment' => 'nullable|file|max:10240', // Limit 10MB
+            'authors' => 'nullable|array',
+            'topics' => 'nullable|array',
         ]);
 
         $data = $validated;
-        unset($data['cover_image'], $data['attachment']);
+        unset($data['cover_image'], $data['attachment'], $data['authors'], $data['topics']);
 
         // Handle Cover Image
         if ($request->hasFile('cover_image')) {
@@ -76,6 +87,14 @@ class BibliographyController extends Controller
             'input_date' => now(),
             'last_update' => now(),
         ]));
+
+        // Sync many-to-many
+        if ($request->has('authors')) {
+            $bibliography->authors()->sync($request->input('authors'));
+        }
+        if ($request->has('topics')) {
+            $bibliography->topics()->sync($request->input('topics'));
+        }
 
         // Handle Attachment File
         if ($request->hasFile('attachment')) {
@@ -107,7 +126,7 @@ class BibliographyController extends Controller
      */
     public function show($id)
     {
-        $bibliography = Biblio::with(['attachments','orgUnits'])->findOrFail($id);
+        $bibliography = Biblio::with(['attachments','orgUnits', 'authors', 'topics'])->findOrFail($id);
         $allUnits     = \App\Models\OrgUnit::active()->orderBy('sort_order')->get();
         return view('admin.bibliography.show', compact('bibliography', 'allUnits'));
     }
@@ -117,10 +136,24 @@ class BibliographyController extends Controller
      */
     public function edit($id)
     {
-        $bibliography   = Biblio::with(['attachments','orgUnits'])->findOrFail($id);
+        $bibliography   = Biblio::with(['attachments','orgUnits', 'authors', 'topics'])->findOrFail($id);
         $allUnits       = \App\Models\OrgUnit::active()->orderBy('sort_order')->get();
         $taggedUnitIds  = $bibliography->orgUnits->pluck('id')->toArray();
-        return view('admin.bibliography.edit', compact('bibliography', 'allUnits', 'taggedUnitIds'));
+
+        $gmds       = \App\Models\Gmd::orderBy('gmd_name')->get();
+        $publishers = \App\Models\Publisher::orderBy('publisher_name')->get();
+        $places     = \App\Models\Place::orderBy('place_name')->get();
+        $languages  = \App\Models\Language::orderBy('language_name')->get();
+        $authors    = \App\Models\Author::orderBy('author_name')->get();
+        $topics     = \App\Models\Topic::orderBy('topic')->get();
+
+        $selectedAuthors = $bibliography->authors->pluck('author_id')->toArray();
+        $selectedTopics  = $bibliography->topics->pluck('topic_id')->toArray();
+
+        return view('admin.bibliography.edit', compact(
+            'bibliography', 'allUnits', 'taggedUnitIds', 'gmds', 'publishers', 'places', 
+            'languages', 'authors', 'topics', 'selectedAuthors', 'selectedTopics'
+        ));
     }
 
     /**
@@ -137,13 +170,19 @@ class BibliographyController extends Controller
             'edition' => 'nullable|string|max:50',
             'call_number' => 'nullable|string|max:50',
             'classification' => 'nullable|string|max:40',
+            'gmd_id' => 'nullable|integer',
+            'publisher_id' => 'nullable|integer',
+            'publish_place_id' => 'nullable|integer',
+            'language_id' => 'nullable|integer',
             'notes' => 'nullable|string',
             'cover_image' => 'nullable|image|max:2048',
             'attachment' => 'nullable|file|max:10240',
+            'authors' => 'nullable|array',
+            'topics' => 'nullable|array',
         ]);
 
         $data = $validated;
-        unset($data['cover_image'], $data['attachment']);
+        unset($data['cover_image'], $data['attachment'], $data['authors'], $data['topics']);
 
         // Handle Cover Image Update
         if ($request->hasFile('cover_image')) {
@@ -156,6 +195,10 @@ class BibliographyController extends Controller
         $bibliography->update(array_merge($data, [
             'last_update' => now(),
         ]));
+
+        // Sync many-to-many
+        $bibliography->authors()->sync($request->input('authors', []));
+        $bibliography->topics()->sync($request->input('topics', []));
 
         // Handle Attachment File Update
         if ($request->hasFile('attachment')) {

@@ -71,6 +71,12 @@ class Biblio extends Model
                     ->withPivot('level');
     }
 
+    public function topics()
+    {
+        return $this->belongsToMany(Topic::class, 'biblio_topic', 'biblio_id', 'topic_id')
+                    ->withPivot('level');
+    }
+
     public function attachments()
     {
         return $this->belongsToMany(AttachmentFile::class, 'biblio_attachment', 'biblio_id', 'file_id')
