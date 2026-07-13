@@ -136,4 +136,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Keloba Unit Organisasi / Prodi
     Route::resource('org-units', \App\Http\Controllers\Admin\OrgUnitController::class)->except(['create', 'show', 'edit']);
+
+    // Kelola Menu OPAC Dinamis
+    Route::resource('menus', \App\Http\Controllers\Admin\MenuController::class)->except(['create', 'show', 'edit']);
 });

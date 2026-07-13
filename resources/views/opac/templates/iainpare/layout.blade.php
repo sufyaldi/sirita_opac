@@ -159,14 +159,42 @@
                 </div>
             </a>
             <div class="nav-links">
-                <a href="{{ route('opac.index') }}">Beranda</a>
-                @if(session('opac_member_id'))
-                    <a href="{{ route('opac.member.dashboard') }}" style="color: #fbbf24; font-weight: 700;">Area Anggota</a>
+                @if(isset($opacMenus) && $opacMenus->isNotEmpty())
+                    @foreach($opacMenus as $menu)
+                        @php
+                            $url = $menu->url;
+                            if ($url === '/') {
+                                $isActive = Request::path() === '/';
+                            } elseif ($url === '/member') {
+                                $isActive = Request::is('member*');
+                                if (session('opac_member_id')) {
+                                    $url = route('opac.member.dashboard');
+                                } else {
+                                    $url = route('opac.member.area');
+                                }
+                            } else {
+                                $isActive = false;
+                            }
+                            
+                            $label = $menu->name;
+                            if ($menu->url === '/member' && session('opac_member_id')) {
+                                $label = '⊙ ' . session('opac_member_name');
+                            }
+                        @endphp
+                        <a href="{{ $url }}" class="{{ $isActive ? 'active' : '' }}" style="{{ $menu->url === '/member' && session('opac_member_id') ? 'color: #fbbf24; font-weight: 700;' : '' }}">
+                            {{ $label }}
+                        </a>
+                    @endforeach
                 @else
-                    <a href="{{ route('opac.member.area') }}">Area Anggota</a>
+                    <a href="{{ route('opac.index') }}">Beranda</a>
+                    @if(session('opac_member_id'))
+                        <a href="{{ route('opac.member.dashboard') }}" style="color: #fbbf24; font-weight: 700;">Area Anggota</a>
+                    @else
+                        <a href="{{ route('opac.member.area') }}">Area Anggota</a>
+                    @endif
+                    <a href="#">Informasi</a>
+                    <a href="#">Bantuan</a>
                 @endif
-                <a href="#">Informasi</a>
-                <a href="#">Bantuan</a>
             </div>
         </div>
     </header>
