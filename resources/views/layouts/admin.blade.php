@@ -159,6 +159,9 @@
             <li class="menu-item {{ Request::routeIs('admin.serial-control.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.serial-control.index') }}">Terbitan Berseri</a>
             </li>
+            <li class="menu-item {{ Request::routeIs('admin.stock-take.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.stock-take.index') }}">Inventarisasi</a>
+            </li>
             <li class="menu-item {{ Request::routeIs('admin.setting.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.setting.index') }}">Pengaturan</a>
             </li>

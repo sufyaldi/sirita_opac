@@ -98,4 +98,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('serial-control/kardex/{kardex_id}/receive', [\App\Http\Controllers\Admin\SerialControlController::class, 'receiveKardex'])->name('serial-control.kardex.receive');
     Route::post('serial-control/kardex/{kardex_id}/missing', [\App\Http\Controllers\Admin\SerialControlController::class, 'missKardex'])->name('serial-control.kardex.missing');
     Route::delete('serial-control/kardex/{kardex_id}', [\App\Http\Controllers\Admin\SerialControlController::class, 'destroyKardex'])->name('serial-control.kardex.destroy');
+
+    // Stock Take Module
+    Route::get('stock-take', [\App\Http\Controllers\Admin\StockTakeController::class, 'index'])->name('stock-take.index');
+    Route::post('stock-take', [\App\Http\Controllers\Admin\StockTakeController::class, 'startSession'])->name('stock-take.start');
+    Route::get('stock-take/current', [\App\Http\Controllers\Admin\StockTakeController::class, 'showCurrent'])->name('stock-take.current');
+    Route::post('stock-take/current', [\App\Http\Controllers\Admin\StockTakeController::class, 'scanItem'])->name('stock-take.scan');
+    Route::get('stock-take/report', [\App\Http\Controllers\Admin\StockTakeController::class, 'showReport'])->name('stock-take.report');
+    Route::post('stock-take/finish', [\App\Http\Controllers\Admin\StockTakeController::class, 'finishSession'])->name('stock-take.finish');
 });
