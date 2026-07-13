@@ -42,6 +42,9 @@ Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.lo
 
 // Admin Module Routes (Requires authentication guard in production)
 Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('admin.circulation.index');
+    });
     
     // Bibliography Module (CRUD)
     Route::resource('bibliography', BibliographyController::class);
