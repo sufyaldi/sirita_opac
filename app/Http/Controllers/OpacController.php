@@ -36,7 +36,15 @@ class OpacController extends Controller
         // Paginate results
         $results = $query->paginate(12);
 
-        return view('opac.index', compact('results'));
+        // Hitung statistik perpustakaan real-time
+        $totalTitles = Biblio::where('opac_hide', 0)->count();
+        $totalItems  = \App\Models\Item::count();
+        $activeLoans = \App\Models\Loan::where('is_return', 0)->count();
+
+        // Ambil pengumuman/berita yang aktif
+        $promotions = \App\Models\Promotion::active()->get();
+
+        return view('opac.index', compact('results', 'totalTitles', 'totalItems', 'activeLoans', 'promotions'));
     }
 
     /**

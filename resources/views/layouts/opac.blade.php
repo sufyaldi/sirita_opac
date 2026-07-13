@@ -7,12 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f172a;
+            --bg-color: #0b0f19;
             --text-color: #f8fafc;
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
+            --primary: #0d9488; /* Teal / Hijau Tosca */
+            --primary-hover: #0f766e;
+            --card-bg: rgba(20, 30, 48, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
         }
 
         body {
@@ -27,7 +27,7 @@
         }
 
         header {
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(11, 15, 25, 0.85);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color);
             position: sticky;
@@ -38,18 +38,18 @@
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem 2rem;
+            padding: 1.25rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: var(--text-color);
             text-decoration: none;
-            background: linear-gradient(to right, #818cf8, #c084fc);
+            background: linear-gradient(to right, #0d9488, #2dd4bf);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -57,7 +57,7 @@
         .nav-links a {
             color: #94a3b8;
             text-decoration: none;
-            margin-left: 1.5rem;
+            margin-left: 1.75rem;
             font-weight: 500;
             transition: color 0.3s;
         }
