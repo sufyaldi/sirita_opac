@@ -40,8 +40,8 @@ Route::get('/admin/login', [LoginController::class, 'showLoginForm'])->name('adm
 Route::post('/admin/login', [LoginController::class, 'login'])->name('admin.login.submit');
 Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
-// Admin Module Routes (Requires authentication guard in production)
-Route::prefix('admin')->name('admin.')->group(function () {
+// Admin Module Routes (Requires authentication guard)
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', function () {
         return redirect()->route('admin.circulation.index');
     });
