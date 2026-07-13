@@ -81,4 +81,18 @@ class Biblio extends Model
     {
         return $this->belongsTo(Place::class, 'publish_place_id', 'place_id');
     }
+
+    /**
+     * Unit perpustakaan yang mengklaim judul ini (untuk akreditasi BAN-PT/LAM).
+     */
+    public function orgUnits()
+    {
+        return $this->belongsToMany(
+            OrgUnit::class,
+            'biblio_org_unit',
+            'biblio_id',
+            'unit_id'
+        )->withPivot('is_core', 'notes', 'tagged_by', 'tagged_at');
+    }
 }
+

@@ -181,9 +181,17 @@
             <li class="menu-item {{ Request::routeIs('admin.stock-take.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.stock-take.index') }}">Inventarisasi</a>
             </li>
+            <li class="menu-item {{ Request::routeIs('admin.accreditation.*') ? 'active' : '' }}" style="{{ Request::routeIs('admin.accreditation.*') ? 'background: linear-gradient(90deg, rgba(99,102,241,0.15), transparent); border-left: 2px solid #818cf8;' : '' }}">
+                <a href="{{ route('admin.accreditation.index') }}" style="display:flex;align-items:center;gap:0.5rem;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    Akreditasi
+                    <span style="margin-left:auto;font-size:0.65rem;background:rgba(251,191,36,0.2);color:#fbbf24;padding:0.1rem 0.4rem;border-radius:4px;font-weight:700;">BAN-PT</span>
+                </a>
+            </li>
             <li class="menu-item {{ Request::routeIs('admin.system.holidays.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.system.holidays.index') }}">Hari Libur</a>
             </li>
+
             <li class="menu-item {{ Request::routeIs('admin.system.users.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.system.users.index') }}">Pustakawan Staf</a>
             </li>

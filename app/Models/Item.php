@@ -55,4 +55,13 @@ class Item extends Model
     {
         return $this->hasMany(Loan::class, 'item_code', 'item_code');
     }
+
+    /**
+     * Unit perpustakaan pemilik fisik eksemplar ini.
+     */
+    public function branch()
+    {
+        return $this->belongsTo(OrgUnit::class, 'branch_id');
+    }
 }
+
