@@ -70,6 +70,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     // Membership Module (CRUD)
     Route::resource('membership', MembershipController::class);
+    Route::post('membership/extend', [MembershipController::class, 'extend'])->name('membership.extend');
+
 
     // Settings Module
     Route::get('setting', [SettingController::class, 'index'])->name('setting.index');
