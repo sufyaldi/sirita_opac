@@ -160,6 +160,9 @@
             <li class="menu-item {{ Request::routeIs('admin.circulation.fines') ? 'active' : '' }}">
                 <a href="{{ route('admin.circulation.fines') }}">Kelola Denda</a>
             </li>
+            <li class="menu-item {{ Request::routeIs('admin.circulation.loan-rules.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.circulation.loan-rules.index') }}">Aturan Peminjaman</a>
+            </li>
             <li class="menu-item {{ Request::routeIs('admin.bibliography.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.bibliography.index') }}">Bibliografi</a>
                 @if(class_exists('App\Plugins\PluginManager') && count(App\Plugins\PluginManager::getMenus('bibliography')) > 0)

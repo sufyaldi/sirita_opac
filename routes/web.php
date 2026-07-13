@@ -49,6 +49,16 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // Bibliography Module (CRUD)
     Route::resource('bibliography', BibliographyController::class);
 
+    // Loan Rules Module (CRUD)
+    Route::resource('circulation/loan-rules', \App\Http\Controllers\Admin\LoanRulesController::class)->names([
+        'index' => 'circulation.loan-rules.index',
+        'create' => 'circulation.loan-rules.create',
+        'store' => 'circulation.loan-rules.store',
+        'edit' => 'circulation.loan-rules.edit',
+        'update' => 'circulation.loan-rules.update',
+        'destroy' => 'circulation.loan-rules.destroy',
+    ]);
+
     // Circulation Module
     Route::get('circulation', [CirculationController::class, 'index'])->name('circulation.index');
     Route::post('circulation/start', [CirculationController::class, 'startTransaction'])->name('circulation.start');

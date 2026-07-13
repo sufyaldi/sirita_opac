@@ -35,4 +35,19 @@ class LoanRule extends Model
         'input_date' => 'date',
         'last_update' => 'date',
     ];
+
+    public function memberType()
+    {
+        return $this->belongsTo(MemberType::class, 'member_type_id', 'member_type_id');
+    }
+
+    public function collType()
+    {
+        return $this->belongsTo(CollType::class, 'coll_type_id', 'coll_type_id');
+    }
+
+    public function gmd()
+    {
+        return $this->belongsTo(Gmd::class, 'gmd_id', 'gmd_id');
+    }
 }

@@ -92,13 +92,35 @@ class CirculationController extends Controller
                              ->with('error', 'Buku sedang dipinjam oleh anggota lain.');
         }
 
+        // Fetch dynamic LoanRule
+        $loanRule = \App\Models\LoanRule::where('member_type_id', $member->member_type_id)
+            ->where('coll_type_id', $item->coll_type_id)
+            ->where(function ($q) use ($item) {
+                $q->where('gmd_id', $item->gmd_id)
+                  ->orWhere('gmd_id', 0); // fallback to GMD 'ALL'
+            })
+            ->orderBy('gmd_id', 'desc') // prioritize specific GMD over 'ALL'
+            ->first();
+
+        // Check limits
+        $activeLoansCount = Loan::where('member_id', $member->member_id)->where('is_return', 0)->count();
+        $loanLimit = $loanRule ? $loanRule->loan_limit : 5; // Default limit: 5 books
+
+        if ($activeLoansCount >= $loanLimit) {
+            return redirect()->route('admin.circulation.transaction', ['member_id' => $member_id])
+                             ->with('error', "Batas peminjaman anggota untuk jenis koleksi ini telah mencapai limit ({$loanLimit} buku).");
+        }
+
+        $loanPeriod = $loanRule ? $loanRule->loan_periode : 7; // Default: 7 days
+        $ruleId     = $loanRule ? $loanRule->loan_rules_id : 1;
+
         $loan = Loan::create([
             'item_code' => $request->item_code,
             'member_id' => $member->member_id,
             'loan_date' => now()->toDateString(),
-            'due_date' => now()->addDays(7)->toDateString(), // Example: 7 days loan period
+            'due_date' => now()->addDays($loanPeriod)->toDateString(),
             'renewed' => 0,
-            'loan_rules_id' => 1, // Default loan rule id
+            'loan_rules_id' => $ruleId,
             'is_lent' => 1,
             'is_return' => 0,
             'input_date' => now(),
@@ -106,7 +128,7 @@ class CirculationController extends Controller
         ]);
 
         return redirect()->route('admin.circulation.transaction', ['member_id' => $member_id])
-                         ->with('success', 'Buku berhasil dipinjam.');
+                         ->with('success', "Buku berhasil dipinjam (Masa pinjam {$loanPeriod} hari sesuai aturan).");
     }
 
     /**
@@ -129,16 +151,27 @@ class CirculationController extends Controller
         
         $overdueDays = $this->calculateNetOverdueDays($dueDate, $returnDate);
         if ($overdueDays > 0) {
-            $fineRate = 500; // Example: Rp 500 per day fine
-            $fineAmount = $overdueDays * $fineRate;
+            // Find applicable fine rate from LoanRule
+            $loanRule = \App\Models\LoanRule::find($loan->loan_rules_id);
+            $fineRate = $loanRule ? $loanRule->fine_each_day : 500; // Default: 500/day
+            
+            // Check grace period
+            $grace = $loanRule ? $loanRule->grace_periode : 0;
+            if ($overdueDays <= $grace) {
+                $fineAmount = 0;
+            } else {
+                $fineAmount = $overdueDays * $fineRate;
+            }
 
-            Fine::create([
-                'fines_date' => now()->toDateString(),
-                'member_id' => $loan->member_id,
-                'debet' => $fineAmount,
-                'credit' => 0,
-                'description' => "Denda keterlambatan buku {$loan->item_code} selama {$overdueDays} hari",
-            ]);
+            if ($fineAmount > 0) {
+                Fine::create([
+                    'fines_date' => now()->toDateString(),
+                    'member_id' => $loan->member_id,
+                    'debet' => $fineAmount,
+                    'credit' => 0,
+                    'description' => "Denda keterlambatan buku {$loan->item_code} selama {$overdueDays} hari",
+                ]);
+            }
         }
 
         return redirect()->back()->with('success', 'Buku berhasil dikembalikan.');
