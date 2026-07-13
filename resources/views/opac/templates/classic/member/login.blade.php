@@ -1,4 +1,4 @@
-@extends('layouts.opac')
+@extends('opac.templates.classic.layout')
 
 @section('title', 'Area Keanggotaan - SIRITA OPAC')
 

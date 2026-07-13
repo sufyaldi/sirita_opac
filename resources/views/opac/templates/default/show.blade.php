@@ -1,4 +1,4 @@
-@extends('layouts.opac')
+@extends('opac.templates.default.layout')
 
 @section('title', $book->title . ' - Detail Buku')
 
