@@ -13,11 +13,14 @@ class SettingController extends Controller
     public function index()
     {
         $settings = [
-            'library_name' => \App\Models\Setting::get('library_name', 'Perpustakaan SIRITA'),
-            'fine_rate'    => \App\Models\Setting::get('fine_rate', '500'),
-            'loan_limit'   => \App\Models\Setting::get('loan_limit', '3'),
-            'loan_period'  => \App\Models\Setting::get('loan_period', '7'),
-            'opac_theme'   => \App\Models\Setting::get('opac_theme', 'default'),
+            'library_name'     => \App\Models\Setting::get('library_name', 'Perpustakaan SIRITA'),
+            'fine_rate'        => \App\Models\Setting::get('fine_rate', '500'),
+            'loan_limit'       => \App\Models\Setting::get('loan_limit', '3'),
+            'loan_period'      => \App\Models\Setting::get('loan_period', '7'),
+            'opac_theme'       => \App\Models\Setting::get('opac_theme', 'default'),
+            'footer_address'   => \App\Models\Setting::get('footer_address', ''),
+            'footer_copyright' => \App\Models\Setting::get('footer_copyright', ''),
+            'footer_socials'   => \App\Models\Setting::get('footer_socials', ''),
         ];
         
         return view('admin.setting.index', compact('settings'));
@@ -29,11 +32,14 @@ class SettingController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'library_name' => 'required|string|max:200',
-            'fine_rate'    => 'required|integer|min:0',
-            'loan_limit'   => 'required|integer|min:1',
-            'loan_period'  => 'required|integer|min:1',
-            'opac_theme'   => 'required|string|in:default,classic,minimal,iainpare',
+            'library_name'     => 'required|string|max:200',
+            'fine_rate'        => 'required|integer|min:0',
+            'loan_limit'       => 'required|integer|min:1',
+            'loan_period'      => 'required|integer|min:1',
+            'opac_theme'       => 'required|string|in:default,classic,minimal,iainpare',
+            'footer_address'   => 'nullable|string|max:250',
+            'footer_copyright' => 'nullable|string|max:250',
+            'footer_socials'   => 'nullable|string|max:250',
         ]);
 
         foreach ($validated as $key => $value) {

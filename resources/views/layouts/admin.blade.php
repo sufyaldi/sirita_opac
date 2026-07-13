@@ -209,6 +209,9 @@
             <li class="menu-item {{ Request::routeIs('admin.system.users.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.system.users.index') }}">Pustakawan Staf</a>
             </li>
+            <li class="menu-item {{ Request::routeIs('admin.pages.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.pages.index') }}">Halaman OPAC</a>
+            </li>
             <li class="menu-item {{ Request::routeIs('admin.menus.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.menus.index') }}">Menu OPAC</a>
             </li>

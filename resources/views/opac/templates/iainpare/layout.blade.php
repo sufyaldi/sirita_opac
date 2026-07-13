@@ -204,7 +204,13 @@
     </main>
 
     <footer>
-        <p>&copy; {{ date('Y') }} <a href="https://iainpare.ac.id" target="_blank">IAIN Parepare</a>. Powered by SIRITA Library Management System.</p>
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.5rem; justify-content: center; align-items: center;">
+            <p style="margin: 0; font-weight: 600; color: #f1f5f9;">{{ $footerAddress ?? 'Perpustakaan SIRITA' }}</p>
+            <p style="margin: 0; font-size: 0.8rem; color: #cbd5e1;">{{ $footerCopyright ?? '© 2026 SIRITA' }}</p>
+            @if(isset($footerSocials) && $footerSocials !== '#')
+                <a href="{{ $footerSocials }}" target="_blank" style="color: #fbbf24; font-size: 0.8rem; text-decoration: none; margin-top: 0.25rem;">Media Sosial Perpustakaan</a>
+            @endif
+        </div>
     </footer>
 
     @auth

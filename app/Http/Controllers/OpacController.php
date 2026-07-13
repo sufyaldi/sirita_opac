@@ -58,4 +58,15 @@ class OpacController extends Controller
         $theme = \App\Models\Setting::get('opac_theme', 'default');
         return view("opac.templates.{$theme}.show", compact('book'));
     }
+
+    /**
+     * Show dynamic CMS page by slug.
+     */
+    public function showPage($slug)
+    {
+        $page = \App\Models\Page::where('slug', $slug)->active()->firstOrFail();
+        
+        $theme = \App\Models\Setting::get('opac_theme', 'default');
+        return view("opac.templates.{$theme}.page", compact('page'));
+    }
 }

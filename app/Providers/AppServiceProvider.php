@@ -21,9 +21,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Bagikan data menu navigasi aktif secara global ke semua template OPAC
+        // Bagikan data menu navigasi aktif dan footer secara global ke semua template OPAC
         View::composer('opac.templates.*', function ($view) {
-            $view->with('opacMenus', Menu::active()->get());
+            $view->with([
+                'opacMenus'        => Menu::active()->get(),
+                'footerAddress'   => \App\Models\Setting::get('footer_address', 'Perpustakaan SIRITA'),
+                'footerCopyright' => \App\Models\Setting::get('footer_copyright', '© 2026 SIRITA. All rights reserved.'),
+                'footerSocials'   => \App\Models\Setting::get('footer_socials', '#'),
+            ]);
         });
     }
 }

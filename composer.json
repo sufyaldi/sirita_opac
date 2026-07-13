@@ -1,8 +1,15 @@
 {
     "name": "sufyaldy/sirita-slims",
     "type": "project",
-    "description": "Sistem Informasi Riset & Tata Arsip — SLiMS Laravel Edition. A modern Laravel 11 port of the SLiMS 9 Bulian library management system.",
-    "keywords": ["laravel", "library", "slims", "perpustakaan", "sirkulasi", "bibliografi"],
+    "description": "Sistem Informasi Perpustakaan — SLiMS Laravel Edition. A modern Laravel 11 port of the SLiMS 9 Bulian library management system.",
+    "keywords": [
+        "laravel",
+        "library",
+        "slims",
+        "perpustakaan",
+        "sirkulasi",
+        "bibliografi"
+    ],
     "license": "AGPL-3.0-or-later",
     "authors": [
         {

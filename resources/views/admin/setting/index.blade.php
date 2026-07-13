@@ -90,7 +90,26 @@
             </select>
         </div>
 
-        <button type="submit" class="btn-primary">Simpan Pengaturan</button>
+        <div class="form-group" style="margin-top: 2rem; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 1.5rem;">
+            <h4 style="margin: 0 0 1rem; color: #cbd5e1;">Pengaturan Footer OPAC</h4>
+        </div>
+
+        <div class="form-group">
+            <label for="footer_address" class="form-label">Alamat / Kontak Footer</label>
+            <input type="text" id="footer_address" name="footer_address" class="form-control" value="{{ old('footer_address', $settings['footer_address'] ?? '') }}">
+        </div>
+
+        <div class="form-group">
+            <label for="footer_copyright" class="form-label">Teks Hak Cipta Footer</label>
+            <input type="text" id="footer_copyright" name="footer_copyright" class="form-control" value="{{ old('footer_copyright', $settings['footer_copyright'] ?? '') }}">
+        </div>
+
+        <div class="form-group">
+            <label for="footer_socials" class="form-label">Tautan Sosial Media (URL)</label>
+            <input type="text" id="footer_socials" name="footer_socials" class="form-control" value="{{ old('footer_socials', $settings['footer_socials'] ?? '') }}">
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 1rem;">Simpan Pengaturan</button>
     </form>
 </div>
 @endsection

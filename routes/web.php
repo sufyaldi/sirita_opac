@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\MasterFileController;
 // OPAC Routes
 Route::get('/', [OpacController::class, 'index'])->name('opac.index');
 Route::get('/book/{id}', [OpacController::class, 'show'])->name('opac.show');
+Route::get('/page/{slug}', [OpacController::class, 'showPage'])->name('opac.page');
 
 // OPAC Member Self-Service Routes
 Route::get('/member', [OpacMemberController::class, 'showMemberArea'])->name('opac.member.area');
@@ -139,4 +140,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Kelola Menu OPAC Dinamis
     Route::resource('menus', \App\Http\Controllers\Admin\MenuController::class)->except(['create', 'show', 'edit']);
+
+    // Kelola Halaman Dinamis CMS OPAC
+    Route::resource('pages', \App\Http\Controllers\Admin\PageController::class);
 });
