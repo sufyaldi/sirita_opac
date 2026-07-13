@@ -42,11 +42,29 @@ class CirculationController extends Controller
             'member_id' => 'required|string|exists:member,member_id',
         ]);
 
-        $member = Member::with(['loans' => function($q) {
-            $q->where('is_return', 0);
-        }])->findOrFail($request->member_id);
+        $member = Member::findOrFail($request->member_id);
 
-        return view('admin.circulation.transaction', compact('member'));
+        // Active Loans (not returned)
+        $activeLoans = Loan::with('item.bibliography')
+            ->where('member_id', $member->member_id)
+            ->where('is_return', 0)
+            ->orderBy('loan_date', 'desc')
+            ->get();
+
+        // Loan History (returned)
+        $loanHistory = Loan::with('item.bibliography')
+            ->where('member_id', $member->member_id)
+            ->where('is_return', 1)
+            ->orderBy('return_date', 'desc')
+            ->limit(30)
+            ->get();
+
+        // Fines history
+        $fines = Fine::where('member_id', $member->member_id)
+            ->orderBy('fines_date', 'desc')
+            ->get();
+
+        return view('admin.circulation.transaction', compact('member', 'activeLoans', 'loanHistory', 'fines'));
     }
 
     /**
