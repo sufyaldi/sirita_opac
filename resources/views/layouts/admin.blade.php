@@ -139,7 +139,8 @@
         .btn-view-opac:hover {
             background: var(--primary);
         }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    @stack('styles')
 </head>
 <body>
     <div class="sidebar">
@@ -319,5 +320,6 @@
         }
     }
     </script>
+    @stack('scripts')
 </body>
 </html>
