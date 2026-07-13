@@ -120,6 +120,25 @@
         .btn-logout:hover {
             background: rgba(239, 68, 68, 0.1);
         }
+
+        .btn-view-opac {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid var(--primary);
+            color: white;
+            padding: 0.5rem 1.1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .btn-view-opac:hover {
+            background: var(--primary);
+        }
     </style>
 </head>
 <body>
@@ -178,6 +197,10 @@
         <header class="admin-header">
             <h1>@yield('header_title', 'Dashboard')</h1>
             <div class="user-info">
+                <a href="{{ url('/') }}" target="_blank" class="btn-view-opac">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.1rem;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    Lihat OPAC
+                </a>
                 <span>Halo, <strong>{{ Auth::user()->realname ?? 'Admin' }}</strong></span>
                 <form action="{{ route('admin.logout') }}" method="POST" style="margin: 0;">
                     @csrf

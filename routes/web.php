@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BibliographyController;
 use App\Http\Controllers\Admin\CirculationController;
 use App\Http\Controllers\OpacController;
+use App\Http\Controllers\OpacMemberController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +26,12 @@ use App\Http\Controllers\Admin\MasterFileController;
 // OPAC Routes
 Route::get('/', [OpacController::class, 'index'])->name('opac.index');
 Route::get('/book/{id}', [OpacController::class, 'show'])->name('opac.show');
+
+// OPAC Member Self-Service Routes
+Route::get('/member', [OpacMemberController::class, 'showMemberArea'])->name('opac.member.area');
+Route::post('/member/login', [OpacMemberController::class, 'login'])->name('opac.member.login');
+Route::get('/member/dashboard', [OpacMemberController::class, 'dashboard'])->name('opac.member.dashboard');
+Route::post('/member/logout', [OpacMemberController::class, 'logout'])->name('opac.member.logout');
 
 // Admin Auth Routes
 Route::get('/admin/login', [LoginController::class, 'showLoginForm'])->name('admin.login');

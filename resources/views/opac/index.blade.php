@@ -136,21 +136,74 @@
         margin-top: 3rem;
         display: flex;
         justify-content: center;
-        gap: 0.5rem;
+        width: 100%;
     }
 
-    .pagination a, .pagination span {
+    .pagination nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    /* Hide the mobile pagination row and keep desktop only */
+    .pagination nav > div:first-child {
+        display: none !important;
+    }
+
+    .pagination nav > div:last-child {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    /* Target the text 'Showing X to Y of Z results' */
+    .pagination nav p {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    /* Target the pagination buttons container */
+    .pagination nav span[aria-current="page"] span,
+    .pagination nav a,
+    .pagination nav span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         padding: 0.5rem 1rem;
         border-radius: 8px;
-        border: 1px solid var(--border-color);
-        background: var(--card-bg);
-        color: white;
+        border: 1px solid var(--border-color) !important;
+        background: var(--card-bg) !important;
+        color: white !important;
         text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s;
     }
 
-    .pagination .active {
-        background: var(--primary);
-        border-color: var(--primary);
+    .pagination nav a:hover {
+        border-color: var(--primary) !important;
+        color: var(--primary) !important;
+    }
+
+    /* Target active page styling */
+    .pagination nav span[aria-current="page"] span {
+        background: var(--primary) !important;
+        border-color: var(--primary) !important;
+    }
+
+    /* Fix the giant SVG arrows */
+    .pagination svg {
+        width: 1rem !important;
+        height: 1rem !important;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .pagination span[style*="flex-1"] {
+        display: none !important;
     }
 </style>
 
