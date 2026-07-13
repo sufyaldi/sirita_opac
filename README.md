@@ -1,6 +1,6 @@
 # SIRITA SLiMS — Laravel Edition
 
-> **SIRITA** (**Si**stem Informasi **Ri**set & **T**ata **A**rsip) adalah implementasi ulang sistem manajemen perpustakaan [SLiMS 9 Bulian](https://slims.web.id) berbasis **Laravel 11**, dibangun dengan arsitektur modern, antarmuka yang premium, dan infrastruktur berbasis Docker.
+> **SIRITA SLiMS** adalah implementasi ulang sistem manajemen perpustakaan [SLiMS 9 Bulian](https://slims.web.id) berbasis **Laravel 11**, dibangun dengan arsitektur modern, antarmuka yang premium, dan infrastruktur berbasis Docker.
 
 ---
 
