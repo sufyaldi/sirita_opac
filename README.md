@@ -35,9 +35,8 @@ Proyek ini adalah hasil migrasi penuh dari SLiMS 9 (PHP prosedural + framework s
 | Komponen | Teknologi |
 |---|---|
 | Backend | **Laravel 11** (PHP 8.3) |
-| Database | **MariaDB LTS** |
-| Web Server | **Nginx** (via Docker) |
-| Kontainer | **Docker** + Docker Compose |
+| Database | **MySQL** / **MariaDB** |
+| Web Server | Apache / Nginx |
 | Frontend | **Blade** + Vanilla CSS (Dark mode / Glassmorphism) |
 | Visualisasi | **Chart.js** (CDN) |
 | Barcode | **JsBarcode** (CDN) |
@@ -47,51 +46,67 @@ Proyek ini adalah hasil migrasi penuh dari SLiMS 9 (PHP prosedural + framework s
 ## 🚀 Memulai (Quick Start)
 
 ### Prasyarat
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) terinstal dan berjalan
+- PHP **>= 8.2** dengan ekstensi: `pdo`, `mbstring`, `xml`, `fileinfo`, `gd`
+- **MySQL** atau **MariaDB** >= 10.5
+- **Composer** >= 2.x
+- Web Server: Apache / Nginx
 - Git
 
 ### Langkah Instalasi
 
 **1. Clone repositori:**
 ```bash
-git clone https://github.com/<username>/sirita_slims.git
+git clone https://github.com/sufyaldi/sirita_slims.git
 cd sirita_slims
 ```
 
-**2. Salin file konfigurasi environment:**
+**2. Instal dependensi PHP:**
+```bash
+composer install --optimize-autoloader --no-dev
+```
+
+**3. Salin & konfigurasi file environment:**
 ```bash
 cp .env.example .env
 ```
-> Sesuaikan nilai `DB_*` jika diperlukan. Nilai default sudah cocok untuk Docker Compose.
+Buka file `.env` dan sesuaikan nilai berikut:
+```env
+APP_URL=http://localhost
 
-**3. Jalankan kontainer Docker:**
-```bash
-docker compose up -d --build
+DB_HOST=127.0.0.1
+DB_DATABASE=sirita_slims
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
-**4. Jalankan migrasi database & seeder:**
+**4. Generate application key:**
+```bash
+php artisan key:generate
+```
+
+**5. Jalankan migrasi & seeder database:**
 ```bash
 # Jalankan semua migrasi tabel
-docker compose exec app php artisan migrate
+php artisan migrate
 
-# Seed data default (admin user, GMD, dll)
-docker compose exec app php artisan db:seed
+# Seed data default (admin, GMD, dll)
+php artisan db:seed
 
-# Seed data dummy untuk simulasi visualisasi (opsional)
-docker compose exec app php artisan db:seed --class=DummyDataSeeder
-```
-
-**5. Generate application key:**
-```bash
-docker compose exec app php artisan key:generate
+# (Opsional) Seed data dummy untuk demo visualisasi
+php artisan db:seed --class=DummyDataSeeder
 ```
 
 **6. Buat symlink storage:**
 ```bash
-docker compose exec app php artisan storage:link
+php artisan storage:link
 ```
 
-**7. Akses aplikasi:**
+**7. Jalankan server lokal (development):**
+```bash
+php artisan serve
+```
+
+**8. Akses aplikasi:**
 
 | URL | Keterangan |
 |---|---|
@@ -137,7 +152,7 @@ sirita_slims/
 ## 🧪 Menjalankan Pengujian Otomatis
 
 ```bash
-docker compose exec app php artisan test
+php artisan test
 ```
 
 **Hasil yang diharapkan:**
@@ -148,15 +163,6 @@ PASS  Tests\Feature\CirculationTest
 
 Tests: 2 passed (5 assertions)
 ```
-
----
-
-## 🐳 Layanan Docker
-
-| Service | Container | Port Host | Keterangan |
-|---|---|---|---|
-| PHP App | `sirita_slims` | `8000` | Laravel + Nginx |
-| Database | `sirita_db` | `3307` | MariaDB LTS |
 
 ---
 
