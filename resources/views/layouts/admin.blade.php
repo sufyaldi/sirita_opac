@@ -181,17 +181,24 @@
             <li class="menu-item {{ Request::routeIs('admin.stock-take.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.stock-take.index') }}">Inventarisasi</a>
             </li>
-            <li class="menu-item {{ Request::routeIs('admin.accreditation.*') || Request::routeIs('admin.org-units.*') ? 'active' : '' }}" style="{{ Request::routeIs('admin.accreditation.*') || Request::routeIs('admin.org-units.*') ? 'background: linear-gradient(90deg, rgba(99,102,241,0.05), transparent); border-left: 2px solid #818cf8;' : '' }}">
-                <div style="padding: 0.8rem 1rem 0.5rem; display: flex; align-items: center; gap: 0.5rem; color: #94a3b8; font-weight: 600; font-size: 0.85rem;">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                    Akreditasi BAN-PT
+            <li class="menu-item" style="border-radius: 12px; overflow: hidden; margin-bottom: 0.5rem; background: {{ Request::routeIs('admin.accreditation.*') || Request::routeIs('admin.org-units.*') ? 'rgba(30, 41, 59, 0.4)' : 'transparent' }}; border: 1px solid {{ Request::routeIs('admin.accreditation.*') || Request::routeIs('admin.org-units.*') ? 'rgba(255,255,255,0.04)' : 'transparent' }};">
+                <div onclick="toggleSubMenu(this)" style="padding: 0.8rem 1rem; display: flex; align-items: center; justify-content: space-between; color: #cbd5e1; font-weight: 600; font-size: 0.88rem; cursor: pointer; user-select: none;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #818cf8; flex-shrink:0;"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                        <span>Akreditasi BAN-PT</span>
+                    </div>
+                    <svg class="caret-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transition: transform 0.3s; transform: {{ Request::routeIs('admin.accreditation.*') || Request::routeIs('admin.org-units.*') ? 'rotate(0deg)' : 'rotate(-90deg)' }}; color: #64748b;"><polyline points="6 9 12 15 18 9"/></svg>
                 </div>
-                <ul style="list-style: none; padding-left: 1.5rem; margin: 0 0 0.5rem; display: flex; flex-direction: column; gap: 0.25rem;">
+                <ul class="sub-menu-items" style="list-style: none; padding: 0 0 0.75rem 2.3rem; margin: 0; display: {{ Request::routeIs('admin.accreditation.*') || Request::routeIs('admin.org-units.*') ? 'flex' : 'none' }}; flex-direction: column; gap: 0.4rem;">
                     <li>
-                        <a href="{{ route('admin.accreditation.index') }}" style="font-size: 0.8rem; color: {{ Request::routeIs('admin.accreditation.index') || Request::routeIs('admin.accreditation.report') ? '#818cf8' : '#64748b' }}; text-decoration: none; padding: 0.25rem 0.5rem; display: block;">Laporan Koleksi</a>
+                        <a href="{{ route('admin.accreditation.index') }}" style="font-size: 0.82rem; color: {{ Request::routeIs('admin.accreditation.index') || Request::routeIs('admin.accreditation.report') ? '#818cf8' : '#94a3b8' }}; text-decoration: none; padding: 0.3rem 0; display: block; font-weight: {{ Request::routeIs('admin.accreditation.index') || Request::routeIs('admin.accreditation.report') ? '600' : '400' }}; transition: color 0.2s;">
+                            ⊙ Laporan Koleksi
+                        </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.org-units.index') }}" style="font-size: 0.8rem; color: {{ Request::routeIs('admin.org-units.*') ? '#818cf8' : '#64748b' }}; text-decoration: none; padding: 0.25rem 0.5rem; display: block;">Kelola Unit / Prodi</a>
+                        <a href="{{ route('admin.org-units.index') }}" style="font-size: 0.82rem; color: {{ Request::routeIs('admin.org-units.*') ? '#818cf8' : '#94a3b8' }}; text-decoration: none; padding: 0.3rem 0; display: block; font-weight: {{ Request::routeIs('admin.org-units.*') ? '600' : '400' }}; transition: color 0.2s;">
+                            ⊙ Kelola Unit / Prodi
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -259,5 +266,21 @@
 
         @yield('content')
     </div>
+
+    <script>
+    function toggleSubMenu(headerEl) {
+        const parentEl = headerEl.parentElement;
+        const subMenu = parentEl.querySelector('.sub-menu-items');
+        const caret = headerEl.querySelector('.caret-icon');
+        
+        if (subMenu.style.display === 'none' || subMenu.style.display === '') {
+            subMenu.style.display = 'flex';
+            caret.style.transform = 'rotate(0deg)';
+        } else {
+            subMenu.style.display = 'none';
+            caret.style.transform = 'rotate(-90deg)';
+        }
+    }
+    </script>
 </body>
 </html>
