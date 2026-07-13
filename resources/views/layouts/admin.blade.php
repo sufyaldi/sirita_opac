@@ -147,15 +147,36 @@
         <ul class="menu-list">
             <li class="menu-item {{ Request::routeIs('admin.circulation.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.circulation.index') }}">Sirkulasi</a>
+                @if(class_exists('App\Plugins\PluginManager') && count(App\Plugins\PluginManager::getMenus('circulation')) > 0)
+                    <ul class="plugin-submenu" style="padding-left: 1.5rem; list-style: none; margin: 0.25rem 0;">
+                        @foreach(App\Plugins\PluginManager::getMenus('circulation') as $pmenu)
+                            <li><a href="{{ Route::has($pmenu['route']) ? route($pmenu['route']) : $pmenu['route'] }}" style="font-size: 0.8rem; color: #94a3b8; text-decoration: none;">⊙ {{ $pmenu['label'] }}</a></li>
+                        @endforeach
+                    </ul>
+                @endif
             </li>
             <li class="menu-item {{ Request::routeIs('admin.circulation.fines') ? 'active' : '' }}">
                 <a href="{{ route('admin.circulation.fines') }}">Kelola Denda</a>
             </li>
             <li class="menu-item {{ Request::routeIs('admin.bibliography.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.bibliography.index') }}">Bibliografi</a>
+                @if(class_exists('App\Plugins\PluginManager') && count(App\Plugins\PluginManager::getMenus('bibliography')) > 0)
+                    <ul class="plugin-submenu" style="padding-left: 1.5rem; list-style: none; margin: 0.25rem 0;">
+                        @foreach(App\Plugins\PluginManager::getMenus('bibliography') as $pmenu)
+                            <li><a href="{{ Route::has($pmenu['route']) ? route($pmenu['route']) : $pmenu['route'] }}" style="font-size: 0.8rem; color: #94a3b8; text-decoration: none;">⊙ {{ $pmenu['label'] }}</a></li>
+                        @endforeach
+                    </ul>
+                @endif
             </li>
             <li class="menu-item {{ Request::routeIs('admin.membership.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.membership.index') }}">Keanggotaan</a>
+                @if(class_exists('App\Plugins\PluginManager') && count(App\Plugins\PluginManager::getMenus('membership')) > 0)
+                    <ul class="plugin-submenu" style="padding-left: 1.5rem; list-style: none; margin: 0.25rem 0;">
+                        @foreach(App\Plugins\PluginManager::getMenus('membership') as $pmenu)
+                            <li><a href="{{ Route::has($pmenu['route']) ? route($pmenu['route']) : $pmenu['route'] }}" style="font-size: 0.8rem; color: #94a3b8; text-decoration: none;">⊙ {{ $pmenu['label'] }}</a></li>
+                        @endforeach
+                    </ul>
+                @endif
             </li>
             <li class="menu-item {{ Request::routeIs('admin.master-file.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.master-file.index', 'author') }}">Master Data</a>
@@ -174,6 +195,13 @@
             </li>
             <li class="menu-item {{ Request::routeIs('admin.reporting.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.reporting.index') }}">Pelaporan</a>
+                @if(class_exists('App\Plugins\PluginManager') && count(App\Plugins\PluginManager::getMenus('reporting')) > 0)
+                    <ul class="plugin-submenu" style="padding-left: 1.5rem; list-style: none; margin: 0.25rem 0;">
+                        @foreach(App\Plugins\PluginManager::getMenus('reporting') as $pmenu)
+                            <li><a href="{{ Route::has($pmenu['route']) ? route($pmenu['route']) : $pmenu['route'] }}" style="font-size: 0.8rem; color: #94a3b8; text-decoration: none;">⊙ {{ $pmenu['label'] }}</a></li>
+                        @endforeach
+                    </ul>
+                @endif
             </li>
             <li class="menu-item {{ Request::routeIs('admin.serial-control.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.serial-control.index') }}">Terbitan Berseri</a>
@@ -214,6 +242,9 @@
             </li>
             <li class="menu-item {{ Request::routeIs('admin.menus.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.menus.index') }}">Menu OPAC</a>
+            </li>
+            <li class="menu-item {{ Request::routeIs('admin.system.plugins.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.system.plugins.index') }}">Daftar Plugin</a>
             </li>
             <li class="menu-item {{ Request::routeIs('admin.setting.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.setting.index') }}">Pengaturan</a>

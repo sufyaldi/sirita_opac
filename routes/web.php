@@ -124,6 +124,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('system/holidays', [\App\Http\Controllers\Admin\HolidayController::class, 'store'])->name('system.holidays.store');
     Route::delete('system/holidays/{holiday_id}', [\App\Http\Controllers\Admin\HolidayController::class, 'destroy'])->name('system.holidays.destroy');
 
+    // Plugins Management Module
+    Route::get('system/plugins', [\App\Http\Controllers\Admin\PluginController::class, 'index'])->name('system.plugins.index');
+    Route::post('system/plugins/toggle', [\App\Http\Controllers\Admin\PluginController::class, 'toggle'])->name('system.plugins.toggle');
+
     // System Users (Librarians) Module
     Route::get('system/users', [\App\Http\Controllers\Admin\SystemUserController::class, 'index'])->name('system.users.index');
     Route::post('system/users', [\App\Http\Controllers\Admin\SystemUserController::class, 'store'])->name('system.users.store');

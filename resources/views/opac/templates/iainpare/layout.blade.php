@@ -193,7 +193,7 @@
                         <a href="{{ route('opac.member.area') }}">Area Anggota</a>
                     @endif
                     <a href="#">Informasi</a>
-                    <a href="#">Bantuan</a>
+                    <a href="{{ route('opac.page', 'bantuan-layanan') }}" {{ Request::is('page/bantuan-layanan') ? 'class=active' : '' }}>Bantuan</a>
                 @endif
             </div>
         </div>

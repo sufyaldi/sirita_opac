@@ -1,0 +1,7 @@
+{
+    "name": "Buku Tamu / Visitor Counter",
+    "description": "Mencatat statistik kunjungan anggota dan tamu umum di halaman depan OPAC, dilengkapi grafik 7 hari terakhir dan tabel log kunjungan.",
+    "version": "1.0.2",
+    "author": "IAIN Parepare",
+    "author_uri": "https://opac.iainpare.ac.id"
+}

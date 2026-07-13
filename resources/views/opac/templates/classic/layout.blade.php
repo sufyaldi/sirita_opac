@@ -149,7 +149,7 @@
                     @else
                         <a href="{{ route('opac.member.area') }}">Keanggotaan</a>
                     @endif
-                    <a href="#">Bantuan</a>
+                    <a href="{{ route('opac.page', 'bantuan-layanan') }}" {{ Request::is('page/bantuan-layanan') ? 'class=active' : '' }}>Bantuan</a>
                 @endif
             </div>
         </div>
