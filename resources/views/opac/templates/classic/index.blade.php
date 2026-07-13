@@ -217,6 +217,71 @@
         color: #ef4444 !important;
         border: 1px solid rgba(239, 68, 68, 0.15) !important;
     }
+
+    /* Fix Pagination Giant Icons */
+    .pagination {
+        margin-top: 3.5rem;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+    .pagination nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+        width: 100%;
+    }
+    .pagination nav > div:first-child {
+        display: none !important;
+    }
+    .pagination nav > div:last-child {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    .pagination nav p {
+        color: #718096;
+        font-size: 0.85rem;
+        margin: 0;
+    }
+    .pagination nav span[aria-current="page"] span,
+    .pagination nav a,
+    .pagination nav span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-color) !important;
+        background: #ffffff !important;
+        color: #4a5568 !important;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+    .pagination nav a:hover {
+        border-color: var(--primary) !important;
+        color: white !important;
+        background: var(--primary) !important;
+    }
+    .pagination nav span[aria-current="page"] span {
+        background: var(--primary) !important;
+        border-color: var(--primary) !important;
+        color: white !important;
+        font-weight: 700;
+    }
+    .pagination svg {
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .pagination span[style*="flex-1"] {
+        display: none !important;
+    }
 </style>
 
 <div class="search-hero">
