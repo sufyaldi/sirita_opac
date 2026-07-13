@@ -55,9 +55,13 @@ class MembershipController extends Controller
             'member_address' => 'nullable|string|max:255',
             'member_phone' => 'nullable|string|max:50',
             'expire_date' => 'required|date',
+            'pin' => 'required|string|min:4',
+        ], [
+            'pin.required' => 'PIN / Password wajib diisi untuk anggota baru.',
         ]);
 
         Member::create(array_merge($validated, [
+            'mpasswd' => md5($validated['pin']),
             'register_date' => now()->toDateString(),
             'member_since_date' => now()->toDateString(),
             'input_date' => now()->toDateString(),
@@ -91,11 +95,25 @@ class MembershipController extends Controller
             'member_address' => 'nullable|string|max:255',
             'member_phone' => 'nullable|string|max:50',
             'expire_date' => 'required|date',
+            'pin' => 'nullable|string|min:4',
         ]);
 
-        $member->update(array_merge($validated, [
+        $updateData = [
+            'member_name' => $validated['member_name'],
+            'gender' => $validated['gender'],
+            'member_email' => $validated['member_email'],
+            'member_address' => $validated['member_address'],
+            'member_phone' => $validated['member_phone'],
+            'expire_date' => $validated['expire_date'],
             'last_update' => now()->toDateString(),
-        ]));
+        ];
+
+        if (!empty($validated['pin'])) {
+            $updateData['pin'] = $validated['pin'];
+            $updateData['mpasswd'] = md5($validated['pin']);
+        }
+
+        $member->update($updateData);
 
         return redirect()->route('admin.membership.index')
                          ->with('success', 'Data anggota berhasil diperbarui.');

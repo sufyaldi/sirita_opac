@@ -123,6 +123,11 @@
             <input type="date" id="expire_date" name="expire_date" value="{{ old('expire_date', $member->expire_date->toDateString()) }}" class="form-control" required>
         </div>
 
+        <div class="form-group">
+            <label for="pin" class="form-label">PIN / Password Baru <span style="font-size: 0.75rem; color: #64748b;">(Kosongkan jika tidak ingin diubah)</span></label>
+            <input type="password" id="pin" name="pin" class="form-control" placeholder="Minimal 4 karakter">
+        </div>
+
         <div class="btn-group">
             <button type="submit" class="btn-primary">Perbarui Anggota</button>
             <a href="{{ route('admin.membership.index') }}" class="btn-secondary">Kembali</a>

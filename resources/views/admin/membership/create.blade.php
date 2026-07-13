@@ -121,6 +121,11 @@
             <input type="date" id="expire_date" name="expire_date" value="{{ date('Y-m-d', strtotime('+1 year')) }}" class="form-control" required>
         </div>
 
+        <div class="form-group">
+            <label for="pin" class="form-label">PIN / Password Login *</label>
+            <input type="password" id="pin" name="pin" class="form-control" placeholder="Minimal 4 karakter" required>
+        </div>
+
         <div class="btn-group">
             <button type="submit" class="btn-primary">Daftarkan Anggota</button>
             <a href="{{ route('admin.membership.index') }}" class="btn-secondary">Kembali</a>

@@ -86,4 +86,50 @@ class User extends Authenticatable
     {
         $this->attributes['groups'] = serialize(is_array($value) ? $value : [$value]);
     }
+
+    /**
+     * Unit kerja / cabang tempat user terdaftar.
+     */
+    public function orgUnits()
+    {
+        return $this->belongsToMany(
+            OrgUnit::class,
+            'user_org_units',
+            'user_id',
+            'unit_id'
+        )->withPivot('role', 'is_default');
+    }
+
+    /**
+     * Mengambil active branch ID dari session, atau fallback ke default branch user.
+     */
+    public function activeBranchId()
+    {
+        if (session()->has('active_branch_id')) {
+            return session('active_branch_id');
+        }
+
+        $default = $this->orgUnits()->wherePivot('is_default', 1)->first();
+        if ($default) {
+            session(['active_branch_id' => $default->id]);
+            return $default->id;
+        }
+
+        $first = $this->orgUnits()->first();
+        if ($first) {
+            session(['active_branch_id' => $first->id]);
+            return $first->id;
+        }
+
+        return null;
+    }
+
+    /**
+     * Mengambil daftar ID cabang yang boleh diakses user ini.
+     */
+    public function allowedBranchIds(): array
+    {
+        return $this->orgUnits()->pluck('org_units.id')->toArray();
+    }
 }
+

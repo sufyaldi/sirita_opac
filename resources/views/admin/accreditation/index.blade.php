@@ -127,7 +127,10 @@
 
 <div class="acc-header">
     <h1>📊 Laporan Koleksi untuk Akreditasi</h1>
-    <p>Ringkasan jumlah judul dan eksemplar per unit perpustakaan — siap tunjuk ke asesor BAN-PT / LAM / APS</p>
+    <p>
+        Ringkasan jumlah judul dan eksemplar per unit perpustakaan — siap tunjuk ke asesor BAN-PT / LAM / APS
+        @if(isset($univNode)) &nbsp;·&nbsp; <strong>{{ $univNode->name }}</strong> @endif
+    </p>
 </div>
 
 <div class="legend-box">

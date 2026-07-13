@@ -107,8 +107,9 @@ class BibliographyController extends Controller
      */
     public function show($id)
     {
-        $bibliography = Biblio::with('attachments')->findOrFail($id);
-        return view('admin.bibliography.show', compact('bibliography'));
+        $bibliography = Biblio::with(['attachments','orgUnits'])->findOrFail($id);
+        $allUnits     = \App\Models\OrgUnit::active()->orderBy('sort_order')->get();
+        return view('admin.bibliography.show', compact('bibliography', 'allUnits'));
     }
 
     /**
@@ -116,8 +117,10 @@ class BibliographyController extends Controller
      */
     public function edit($id)
     {
-        $bibliography = Biblio::with('attachments')->findOrFail($id);
-        return view('admin.bibliography.edit', compact('bibliography'));
+        $bibliography   = Biblio::with(['attachments','orgUnits'])->findOrFail($id);
+        $allUnits       = \App\Models\OrgUnit::active()->orderBy('sort_order')->get();
+        $taggedUnitIds  = $bibliography->orgUnits->pluck('id')->toArray();
+        return view('admin.bibliography.edit', compact('bibliography', 'allUnits', 'taggedUnitIds'));
     }
 
     /**

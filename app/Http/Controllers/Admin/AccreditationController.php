@@ -25,18 +25,33 @@ class AccreditationController extends Controller
      */
     public function index()
     {
-        // Semua unit aktif diurutkan: root → faculty → department
-        $units = OrgUnit::with('children.children')
-                         ->active()
-                         ->roots()
-                         ->orderBy('sort_order')
-                         ->get();
+        // Ambil node universitas (root absolut)
+        $univNode = OrgUnit::active()->where('type', 'university')->first();
+
+        // Yang ditampilkan di tree: children dari universitas (PUSAT, FK, FT, dll)
+        // dengan eager-load sub-children (Program Studi)
+        if ($univNode) {
+            $units = OrgUnit::with('children.children')
+                             ->active()
+                             ->where('parent_id', $univNode->id)
+                             ->orderBy('sort_order')
+                             ->get();
+        } else {
+            // Fallback: semua unit non-universitas yang parent_id = null
+            $units = OrgUnit::with('children.children')
+                             ->active()
+                             ->whereNull('parent_id')
+                             ->where('type', '!=', 'university')
+                             ->orderBy('sort_order')
+                             ->get();
+        }
 
         // Ringkasan statistik per unit (flat, untuk tabel)
         $summary = $this->buildUnitSummary();
 
-        return view('admin.accreditation.index', compact('units', 'summary'));
+        return view('admin.accreditation.index', compact('units', 'summary', 'univNode'));
     }
+
 
     /**
      * Laporan detail satu unit — semua metrik akreditasi.
@@ -169,7 +184,7 @@ class AccreditationController extends Controller
             ]
         );
 
-        return back()->with('success', 'Judul berhasil ditandai untuk koleksi unit perpustakaan.');
+        return back()->with('tag_success', 'Judul berhasil ditandai untuk koleksi unit perpustakaan.');
     }
 
     /**
@@ -182,7 +197,7 @@ class AccreditationController extends Controller
             ->where('unit_id', $unitId)
             ->delete();
 
-        return back()->with('success', 'Tag koleksi berhasil dihapus.');
+        return back()->with('tag_success', 'Tag koleksi berhasil dihapus.');
     }
 
     /**

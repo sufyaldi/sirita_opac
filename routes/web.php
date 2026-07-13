@@ -133,4 +133,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('accreditation/unit/{unitId}', [AccreditationController::class, 'unitReport'])->name('accreditation.report');
     Route::post('accreditation/tag/{biblioId}', [AccreditationController::class, 'tagBiblio'])->name('accreditation.tag');
     Route::delete('accreditation/untag/{biblioId}/{unitId}', [AccreditationController::class, 'untagBiblio'])->name('accreditation.untag');
+
+    // Keloba Unit Organisasi / Prodi
+    Route::resource('org-units', \App\Http\Controllers\Admin\OrgUnitController::class)->except(['create', 'show', 'edit']);
 });
