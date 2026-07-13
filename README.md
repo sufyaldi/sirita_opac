@@ -193,7 +193,7 @@ Kontribusi sangat disambut! Silakan buka _issue_ terlebih dahulu untuk mendiskus
 
 **Sufyaldy**
 - 📧 Email: [sufyaldys@gmail.com](mailto:sufyaldys@gmail.com)
-- 🐙 GitHub: [@sufyaldy](https://github.com/sufyaldi)
+- 🐙 GitHub: [@sufyaldi](https://github.com/sufyaldi)
 
 ---
 
