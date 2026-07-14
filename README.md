@@ -1,6 +1,6 @@
-# SIRITA SLiMS — Laravel Edition
+# SIRITA OPAC 
 
-> **SIRITA SLiMS** adalah implementasi ulang sistem manajemen perpustakaan [SLiMS 9 Bulian](https://slims.web.id) berbasis **Laravel 11**, dibangun dengan arsitektur modern, antarmuka yang premium, dan infrastruktur berbasis Docker.
+> **SIRITA OPAC** adalah implementasi ulang sistem manajemen perpustakaan [SLiMS](https://slims.web.id) berbasis **Laravel 11**, dibangun dengan arsitektur modern, antarmuka yang premium, dan performa yang optimal.
 
 ---
 
@@ -24,7 +24,7 @@ Proyek ini adalah hasil migrasi penuh dari SLiMS 9 (PHP prosedural + framework s
 | 📥 **MARC Import/Export** | Impor & ekspor data bibliografi format MARCXML |
 | 📰 **Serial Control** | Manajemen langganan majalah/jurnal & kartu kendali Kardex |
 | 📊 **Pelaporan** | Dashboard analitik interaktif dengan Chart.js |
-| 🗃️ **Stok Opname** | Inventarisasi koleksi fisik berbasis scan barcode *(dalam pengembangan)* |
+| 🗃️ **Stok Opname** | Inventarisasi koleksi fisik berbasis scan barcode |
 | 🌐 **OPAC** | Halaman publik pencarian & detail koleksi |
 | ⚙️ **Master Data** | Manajemen penulis, penerbit, GMD, lokasi, bahasa, dll |
 
@@ -34,7 +34,7 @@ Proyek ini adalah hasil migrasi penuh dari SLiMS 9 (PHP prosedural + framework s
 
 | Komponen | Teknologi |
 |---|---|
-| Backend | **Laravel 11** (PHP 8.3) |
+| Backend | **Laravel 11** (PHP 8.2+) |
 | Database | **MySQL** / **MariaDB** |
 | Web Server | Apache / Nginx |
 | Frontend | **Blade** + Vanilla CSS (Dark mode / Glassmorphism) |
@@ -43,40 +43,35 @@ Proyek ini adalah hasil migrasi penuh dari SLiMS 9 (PHP prosedural + framework s
 
 ---
 
-## 🚀 Memulai (Quick Start)
+## 🚀 Panduan Instalasi (Quick Start)
 
 ### Prasyarat
-- PHP **>= 8.2** dengan ekstensi: `pdo`, `mbstring`, `xml`, `fileinfo`, `gd`
+- PHP **>= 8.2** dengan ekstensi: `pdo`, `mbstring`, `xml`, `fileinfo`, `gd`, `zip`
 - **MySQL** atau **MariaDB** >= 10.5
 - **Composer** >= 2.x
-- Web Server: Apache / Nginx
-- Git
+- Web Server: Apache / Nginx / XAMPP / Laragon
 
 ### Langkah Instalasi
 
-**1. Clone repositori:**
+**1. Masuk ke direktori proyek:**
 ```bash
-git clone https://github.com/sufyaldi/sirita_slims.git
-cd sirita_slims
+cd sirita_opac
 ```
 
-**2. Instal dependensi PHP:**
+**2. Instal dependensi PHP via Composer:**
 ```bash
-composer install --optimize-autoloader --no-dev
+composer install --optimize-autoloader
 ```
 
-**3. Salin & konfigurasi file environment:**
-```bash
-cp .env.example .env
-```
-Buka file `.env` dan sesuaikan nilai berikut:
+**3. Buat file `.env` & atur koneksi database:**
+Salin berkas `.env.example` menjadi `.env`. Sesuaikan konfigurasi database Anda langsung mengarah ke database SLiMS Native yang ingin digunakan:
 ```env
-APP_URL=http://localhost
-
+DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
-DB_DATABASE=sirita_slims
-DB_USERNAME=root
-DB_PASSWORD=
+DB_PORT=3306
+DB_DATABASE=nama_database_slims_native
+DB_USERNAME=username_database
+DB_PASSWORD=password_database
 ```
 
 **4. Generate application key:**
@@ -84,84 +79,58 @@ DB_PASSWORD=
 php artisan key:generate
 ```
 
-**5. Jalankan migrasi & seeder database:**
+**5. Daftarkan Riwayat Tabel Migrasi SLiMS Native (Fake Run):**
+Karena database SLiMS Native Anda sudah memiliki tabel-tabel utama (seperti `biblio`, `member`, `item`), kita harus menandainya sebagai "sukses" di Laravel agar tidak ditimpa/error saat migrasi berjalan. Jalankan skrip pembantu berikut:
 ```bash
-# Jalankan semua migrasi tabel
-php artisan migrate
+php mark_migrations.php
+```
+*(Catatan: Pastikan file `mark_migrations.php` berada di folder root aplikasi Anda saat dijalankan).*
 
-# Seed data default (admin, GMD, dll)
-php artisan db:seed
-
-# (Opsional) Seed data dummy untuk demo visualisasi
-php artisan db:seed --class=DummyDataSeeder
+**6. Jalankan Migrasi Tabel Sistem Tambahan:**
+Jalankan perintah berikut agar Laravel membuat tabel baru yang belum ada di database SLiMS Native (seperti `org_units`, `promotions`, `menus`, `pages`, dll):
+```bash
+php artisan migrate --force
 ```
 
-**6. Buat symlink storage:**
+**7. Buat Symlink Storage (Untuk Cover Buku & Lampiran):**
 ```bash
 php artisan storage:link
 ```
 
-**7. Jalankan server lokal (development):**
+**8. Jalankan Server Aplikasi:**
 ```bash
 php artisan serve
 ```
 
-**8. Akses aplikasi:**
-
-| URL | Keterangan |
-|---|---|
-| `http://localhost:8000` | OPAC (Halaman Publik) |
-| `http://localhost:8000/admin` | Panel Admin |
-
----
-
-## 🔑 Kredensial Default
-
-| Field | Nilai |
-|---|---|
-| Username | `admin` |
-| Password | `admin123` |
+**9. Akses Aplikasi:**
+* **OPAC (Halaman Publik):** `http://localhost:8000`
+* **Panel Admin:** `http://localhost:8000/admin` (Kredensial Default: `admin@sirita.ac.id` / `password` atau menggunakan akun pustakawan SLiMS Anda yang sudah ada).
 
 ---
 
 ## 🗂️ Struktur Direktori Penting
 
 ```
-sirita_slims/
+sirita_opac/
 ├── app/
 │   ├── Http/Controllers/Admin/   # Controller admin per modul
-│   ├── Models/                   # Eloquent Models
-│   └── Services/                 # Service classes (SRU, MARC)
+│   ├── Models/                   # Eloquent Models (Disesuaikan skema SLiMS)
+│   └── Plugins/SlimsMigrator/    # Plugin Migrasi Data SLiMS
 ├── database/
-│   ├── migrations/               # 25 file migrasi tabel
-│   └── seeders/                  # DatabaseSeeder & DummyDataSeeder
+│   ├── migrations/               # Migrasi tabel sistem SIRITA & SLiMS
 ├── resources/views/
 │   ├── admin/                    # Tampilan panel admin
 │   ├── opac/                     # Tampilan OPAC publik
-│   └── layouts/                  # Master layout admin & opac
-├── routes/
-│   └── web.php                   # Semua route aplikasi
-├── tests/Feature/
-│   └── CirculationTest.php       # Feature tests sirkulasi
-├── Dockerfile                    # Konfigurasi image PHP + Nginx
-└── docker-compose.yml            # Orkestrasi layanan Docker
+│   └── layouts/                  # Master layout admin & opac (pagination fix)
+└── mark_migrations.php           # Script helper penanda migrasi tabel SLiMS
 ```
 
 ---
 
-## 🧪 Menjalankan Pengujian Otomatis
+## 🧪 Pengujian Otomatis
 
 ```bash
 php artisan test
-```
-
-**Hasil yang diharapkan:**
-```
-PASS  Tests\Feature\CirculationTest
-  ✓ item can be checked out to member
-  ✓ item return calculates overdue fines
-
-Tests: 2 passed (5 assertions)
 ```
 
 ---
@@ -176,7 +145,7 @@ Tests: 2 passed (5 assertions)
 - [x] Serial Control & Kardex
 - [x] Pelaporan & Analytics (Chart.js)
 - [x] OPAC Publik
-- [ ] Stock Take / Stok Opname *(in progress)*
+- [x] Stock Take / Stok Opname *(Tersedia data dummy simulasi)*
 - [ ] Multi-bahasa (i18n)
 - [ ] API REST untuk integrasi pihak ketiga
 - [ ] Role-based Access Control (RBAC) granular
@@ -190,10 +159,10 @@ Kontribusi sangat disambut! Silakan buka _issue_ terlebih dahulu untuk mendiskus
 ---
 
 ## 👤 Author
-
-**Sufyaldy**
-- 📧 Email: [sufyaldys@gmail.com](mailto:sufyaldys@gmail.com)
-- 🐙 GitHub: [@sufyaldi](https://github.com/sufyaldi)
+ 
+* **Sufyaldy** ([@sufyaldi](https://github.com/sufyaldi)) - 📧 [sufyaldys@gmail.com](mailto:sufyaldys@gmail.com)
+* **Tim Dev TIPD IAIN Parepare**
+* **Forum TIPD PTKIN**
 
 ---
 

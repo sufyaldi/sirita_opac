@@ -48,10 +48,9 @@ class MigratorService
     {
         $report = [];
 
-        // 1. Tipe Anggota (mst_member_type)
         $report['member_types'] = $this->syncTable('mst_member_type', 'member_type_id', [
             'member_type_name', 'loan_limit', 'loan_periode', 'reborrow_limit', 
-            'fine_each_day', 'grace_periode', 'membership_periode', 'input_date', 'last_update'
+            'fine_each_day', 'grace_periode', 'member_periode', 'input_date', 'last_update'
         ]);
 
         // 2. GMD (mst_gmd)
@@ -74,15 +73,14 @@ class MigratorService
             'author_name', 'authority_type', 'input_date', 'last_update'
         ]);
 
-        // 6. Subjek / Topik (mst_topic)
         $report['topics'] = $this->syncTable('mst_topic', 'topic_id', [
-            'topic', 'topic_type', 'input_date', 'last_update'
+            'topic', 'topic_type', 'classification', 'input_date', 'last_update'
         ]);
 
         // 7. Lokasi Rak (mst_location)
         $report['locations'] = $this->syncTable('mst_location', 'location_id', [
-            'location_code', 'location_name', 'input_date', 'last_update'
-        ]);
+            'location_name', 'input_date', 'last_update'
+        ], 'string');
 
         return $report;
     }
@@ -201,7 +199,7 @@ class MigratorService
     /**
      * Generic sync table function.
      */
-    protected function syncTable($tableName, $primaryKey, $fields, $pkType = 'int')
+    protected function syncTable($tableName, $primaryKey, $fields, $pkType = 'int', $columnMapping = [])
     {
         // Get rows from SLiMS Native DB
         $stmt = $this->pdo->query("SELECT * FROM {$tableName}");
@@ -215,7 +213,25 @@ class MigratorService
             // Build insert/update array
             $data = [];
             foreach ($fields as $field) {
-                $data[$field] = $row[$field] ?? null;
+                // If there's a custom mapping, check that column in source DB
+                $sourceField = $field;
+                if (isset($columnMapping[$field])) {
+                    $sourceField = $columnMapping[$field];
+                }
+                
+                $value = $row[$sourceField] ?? null;
+                
+                // Normalisasi nilai tanggal 0000-00-00 agar tidak memicu error Strict Mode
+                if ($value === '0000-00-00' || $value === null) {
+                    // Cek jika ini field date, berikan fallback
+                    if (str_contains($field, 'date') || str_contains($field, 'update')) {
+                        $value = date('Y-m-d');
+                    }
+                } elseif ($value === '0000-00-00 00:00:00') {
+                    $value = date('Y-m-d H:i:s');
+                }
+                
+                $data[$field] = $value;
             }
 
             // Check if record already exists in SIRITA DB

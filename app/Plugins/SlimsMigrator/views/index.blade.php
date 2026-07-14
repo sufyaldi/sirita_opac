@@ -339,8 +339,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 if (!response.ok) {
-                    const errData = await response.json();
-                    throw new Error(errData.message || `Gagal pada tahap ${step.id}`);
+                    let errText = '';
+                    try {
+                        const errData = await response.json();
+                        errText = errData.message;
+                    } catch (e) {
+                        errText = await response.text();
+                    }
+                    throw new Error(errText || `Gagal pada tahap ${step.id}`);
                 }
 
                 const data = await response.json();

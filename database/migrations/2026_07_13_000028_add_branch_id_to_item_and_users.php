@@ -12,12 +12,19 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Matikan strict mode sql sementara untuk bypass error 0000-00-00 00:00:00
+        $oldSqlMode = Illuminate\Support\Facades\DB::select("SELECT @@SESSION.sql_mode as mode")[0]->mode;
+        Illuminate\Support\Facades\DB::statement("SET SESSION sql_mode = ''");
+
         // Kepemilikan fisik eksemplar per unit
         Schema::table('item', function (Blueprint $table) {
             $table->integer('branch_id')->nullable()->after('uid')
                   ->comment('Unit perpustakaan pemilik eksemplar ini');
             $table->index('branch_id');
         });
+
+        // Kembalikan sql mode semula
+        Illuminate\Support\Facades\DB::statement("SET SESSION sql_mode = '{$oldSqlMode}'");
 
         // Tabel pivot: user <-> org_units (Odoo-style company_ids)
         Schema::create('user_org_units', function (Blueprint $table) {

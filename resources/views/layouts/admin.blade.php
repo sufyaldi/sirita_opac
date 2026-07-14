@@ -16,6 +16,22 @@
             --card-bg: rgba(17, 24, 39, 0.6);
         }
 
+        /* Fix Laravel default giant pagination SVGs */
+        nav[role="navigation"] svg {
+            width: 1.25rem !important;
+            height: 1.25rem !important;
+            display: inline-block;
+        }
+        nav[role="navigation"] .flex.justify-between.flex-1 {
+            display: none !important; /* Hide redundant tailwind pagination buttons */
+        }
+        nav[role="navigation"] div:last-child {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-color);
