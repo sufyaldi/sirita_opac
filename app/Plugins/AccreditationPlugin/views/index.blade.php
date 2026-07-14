@@ -201,28 +201,29 @@
                                 </div>
                             </div>
 
-                            {{-- Sub-children (Program Studi) --}}
                             @if($child->children->isNotEmpty())
                                 <div class="subchild-list">
-                                    @foreach($child->children->sortBy('sort_order') as $sub)
+                                    @foreach($child->children->sortBy('sort_order') as $subchild)
                                         <div class="subchild-row">
                                             <div>
-                                                <span style="color: #cbd5e1; font-size: 0.9rem;">{{ $sub->name }}</span>
-                                                <span class="unit-type-badge badge-{{ $sub->type }}" style="font-size: 0.65rem;">{{ $sub->typeLabel() }}</span>
-                                                @if($sub->student_count)
-                                                    <span style="color: #475569; font-size: 0.78rem;"> · {{ number_format($sub->student_count) }} mhs</span>
-                                                @endif
+                                                <span class="unit-name" style="font-size: 0.9rem; color: #cbd5e1;">{{ $subchild->name }}</span>
+                                                <span class="unit-type-badge badge-{{ $subchild->type }}" style="font-size: 0.65rem;">{{ $subchild->typeLabel() }}</span>
+                                                <div class="unit-code">{{ $subchild->code }}
+                                                    @if($subchild->student_count)
+                                                        &nbsp;·&nbsp; {{ number_format($subchild->student_count) }} mhs
+                                                    @endif
+                                                </div>
                                             </div>
                                             <div class="unit-stats">
                                                 <div class="stat-pill">
-                                                    <div class="val" style="font-size: 1.1rem;">{{ number_format($summary[$sub->id]['titles'] ?? 0) }}</div>
-                                                    <div class="lbl">Judul</div>
+                                                    <div class="val" style="font-size: 1.1rem;">{{ number_format($summary[$subchild->id]['titles'] ?? 0) }}</div>
+                                                    <div class="lbl" style="font-size: 0.6rem;">Judul</div>
                                                 </div>
                                                 <div class="stat-pill">
-                                                    <div class="val" style="font-size: 1.1rem; color: #6ee7b7;">{{ number_format($summary[$sub->id]['items'] ?? 0) }}</div>
-                                                    <div class="lbl">Eksemplar</div>
+                                                    <div class="val" style="font-size: 1.1rem; color: #6ee7b7;">{{ number_format($summary[$subchild->id]['items'] ?? 0) }}</div>
+                                                    <div class="lbl" style="font-size: 0.6rem;">Eksemplar</div>
                                                 </div>
-                                                <a href="{{ route('admin.accreditation.report', $sub->id) }}" class="btn-report" style="font-size: 0.8rem; padding: 0.4rem 0.75rem;">
+                                                <a href="{{ route('admin.accreditation.report', $subchild->id) }}" class="btn-report" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
                                                     Laporan
                                                 </a>
                                             </div>

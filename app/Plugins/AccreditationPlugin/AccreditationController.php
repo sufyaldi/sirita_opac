@@ -9,7 +9,7 @@
  * @copyright 2026 Sufyaldy
  */
 
-namespace App\Http\Controllers\Admin;
+namespace App\Plugins\AccreditationPlugin;
 
 use App\Http\Controllers\Controller;
 use App\Models\OrgUnit;
@@ -49,7 +49,7 @@ class AccreditationController extends Controller
         // Ringkasan statistik per unit (flat, untuk tabel)
         $summary = $this->buildUnitSummary();
 
-        return view('admin.accreditation.index', compact('units', 'summary', 'univNode'));
+        return view('AccreditationPlugin::index', compact('units', 'summary', 'univNode'));
     }
 
 
@@ -151,7 +151,7 @@ class AccreditationController extends Controller
         $foreignPct = $totalTitles > 0 ? round($foreignTitles / $totalTitles * 100, 1) : 0;
         $corePct    = $totalTitles > 0 ? round($coreTitles / $totalTitles * 100, 1) : 0;
 
-        return view('admin.accreditation.unit_report', compact(
+        return view('AccreditationPlugin::unit_report', compact(
             'unit',
             'totalTitles', 'coreTitles', 'recentTitles', 'foreignTitles',
             'totalItems',

@@ -371,34 +371,25 @@
                 </a>
             </li>
 
-            {{-- Pelaporan --}}
-            <li class="menu-item-single-wrap {{ Request::routeIs('admin.reporting.*') ? 'active' : '' }}">
-                <a href="{{ route('admin.reporting.index') }}" class="menu-link-single">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Pelaporan</span>
-                </a>
-            </li>
-        </ul>
-
-        {{-- SECTION 2: AKREDITASI --}}
-        <div class="menu-section-header">Akreditasi</div>
-        <ul class="menu-list">
-            {{-- Akreditasi BAN-PT Dropdown --}}
-            <li class="menu-item-parent {{ Request::routeIs('admin.accreditation.*') || Request::routeIs('admin.org-units.*') ? 'active-parent' : '' }}">
+            {{-- Pelaporan Dropdown --}}
+            <li class="menu-item-parent {{ Request::routeIs('admin.reporting.*') || Request::routeIs('admin.accreditation.*') || Request::routeIs('admin.visitor.*') ? 'active-parent' : '' }}">
                 <div class="menu-item-header" onclick="toggleSubMenu(this)">
                     <div class="menu-item-header-left">
-                        <i class="fas fa-award"></i>
-                        <span>Akreditasi BAN-PT</span>
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Pelaporan</span>
                     </div>
                     <i class="fas fa-chevron-left caret-icon"></i>
                 </div>
                 <ul class="sub-menu-items">
-                    <li class="{{ Request::routeIs('admin.accreditation.index') || Request::routeIs('admin.accreditation.report') ? 'active' : '' }}">
-                        <a href="{{ route('admin.accreditation.index') }}">⊙ Laporan Koleksi</a>
+                    <li class="{{ Request::routeIs('admin.reporting.index') ? 'active' : '' }}">
+                        <a href="{{ route('admin.reporting.index') }}">⊙ Dashboard Statistik</a>
                     </li>
-                    <li class="{{ Request::routeIs('admin.org-units.*') ? 'active' : '' }}">
-                        <a href="{{ route('admin.org-units.index') }}">⊙ Kelola Unit / Prodi</a>
-                    </li>
+                    {{-- Load sub-menu dinamis dari Plugins untuk modul reporting --}}
+                    @foreach(\App\Plugins\PluginManager::getMenus('reporting') as $pMenu)
+                        <li class="{{ Request::routeIs($pMenu['route']) ? 'active' : '' }}">
+                            <a href="{{ route($pMenu['route']) }}">⊙ {{ $pMenu['label'] }}</a>
+                        </li>
+                    @endforeach
                 </ul>
             </li>
         </ul>
@@ -426,7 +417,7 @@
             </li>
 
             {{-- Konfigurasi Sistem Dropdown --}}
-            <li class="menu-item-parent {{ Request::routeIs('admin.system.users.*') || Request::routeIs('admin.system.holidays.*') || Request::routeIs('admin.system.plugins.*') || Request::routeIs('admin.setting.*') || Request::routeIs('admin.plugins.slims-migrator.*') ? 'active-parent' : '' }}">
+            <li class="menu-item-parent {{ Request::routeIs('admin.system.users.*') || Request::routeIs('admin.system.holidays.*') || Request::routeIs('admin.system.plugins.*') || Request::routeIs('admin.setting.*') || Request::routeIs('admin.plugins.slims-migrator.*') || Request::routeIs('admin.org-units.*') ? 'active-parent' : '' }}">
                 <div class="menu-item-header" onclick="toggleSubMenu(this)">
                     <div class="menu-item-header-left">
                         <i class="fas fa-cogs"></i>
@@ -437,6 +428,9 @@
                 <ul class="sub-menu-items">
                     <li class="{{ Request::routeIs('admin.system.users.*') ? 'active' : '' }}">
                         <a href="{{ route('admin.system.users.index') }}">⊙ Pustakawan & Staf</a>
+                    </li>
+                    <li class="{{ Request::routeIs('admin.org-units.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.org-units.index') }}">⊙ Kelola Unit / Prodi</a>
                     </li>
                     <li class="{{ Request::routeIs('admin.system.holidays.*') ? 'active' : '' }}">
                         <a href="{{ route('admin.system.holidays.index') }}">⊙ Hari Libur</a>
