@@ -187,7 +187,7 @@
         </table>
 
         <div class="pagination-wrapper">
-            {{ $visitors->appends(request()->input())->links('vendor.pagination.simple-tailwind') }}
+            {{ $visitors->appends(request()->input())->links() }}
         </div>
     @endif
 </div>
