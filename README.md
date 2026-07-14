@@ -104,7 +104,7 @@ php artisan serve
 
 **9. Akses Aplikasi:**
 * **OPAC (Halaman Publik):** `http://localhost:8000`
-* **Panel Admin:** `http://localhost:8000/admin` (Kredensial Default: `admin@sirita.ac.id` / `password` atau menggunakan akun pustakawan SLiMS Anda yang sudah ada).
+* **Panel Admin:** `http://localhost:8000/admin` (Kredensial Default: `admin@sirita.ac.id` / `password` ).
 
 ---
 
